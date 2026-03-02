@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RULES CBT - FINAL REPAIR</title>
+    <title>RULES CBT - ANTI-BOCOR FIX</title>
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
         * { box-sizing: border-box; }
@@ -19,80 +19,46 @@
         #exam-interface { display: none; flex-direction: column; min-height: 100vh; }
         header { background: white; padding: 15px 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
 
-        .main-content { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 100px; }
+        .main-content { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 120px; }
 
         /* --- SOAL --- */
         .question-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        #q-text { font-weight: bold; margin-bottom: 15px; line-height: 1.4; color: var(--primary); }
-        .aksara-display { font-size: 3.5rem; text-align: center; margin: 15px 0; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px dashed #ccc; }
+        #q-text { font-weight: bold; margin-bottom: 15px; line-height: 1.4; color: var(--primary); font-size: 1.1rem; }
+        .aksara-display { font-size: 3.5rem; text-align: center; margin: 15px 0; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; min-height: 100px; }
 
-        /* --- KOTAK JAWABAN (SOLUSI TABLE) --- */
+        /* --- JAWABAN TABLE SYSTEM --- */
         .options-container { width: 100%; margin-top: 10px; }
-        
         .option-btn { 
-            display: table; /* Paling aman supados rapih */
-            width: 100%; 
-            background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            padding: 0; /* Padding dipindah ka cell */
-            overflow: hidden;
+            display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; 
+            border-radius: 15px; margin-bottom: 12px; cursor: pointer; overflow: hidden; 
         }
+        .radio-cell { display: table-cell; vertical-align: middle; width: 50px; text-align: center; background: #fcfcfc; border-right: 1px solid #eee; }
+        .radio-cell input { transform: scale(1.5); margin: 0; }
+        .text-cell { display: table-cell; vertical-align: middle; padding: 15px 20px; font-size: 16px; font-weight: 600; color: #333; text-align: left; }
 
-        /* Cell Radio Button */
-        .radio-cell { 
-            display: table-cell; 
-            vertical-align: middle; 
-            width: 50px; 
-            text-align: center;
-            background: #fcfcfc;
-            border-right: 1px solid #eee;
-        }
-
-        .radio-cell input { 
-            transform: scale(1.5); 
-            margin: 0; 
-            cursor: pointer;
-        }
-
-        /* Cell Téks Jawaban */
-        .text-cell { 
-            display: table-cell; 
-            vertical-align: middle; 
-            padding: 15px 20px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            color: #333;
-            text-align: left; /* Mastikeun téks rata kénca di jero kotak */
-        }
-
-        /* Efek Pilih */
+        /* Status Pilih */
         .option-btn.active { border-color: var(--blue); background: #f0f7ff; }
         .option-btn.active .radio-cell { background: #e1effe; border-right-color: var(--blue); }
 
         /* --- NAVIGASI --- */
-        .sidebar { background: white; border-radius: 20px; padding: 20px; margin-top: 20px; }
-        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
-        .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 8px; font-weight: bold; background: #fdfdfd; }
-        .q-box.current { border: 2px solid var(--blue); color: var(--blue); }
+        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
+        .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 8px; font-weight: bold; background: #fdfdfd; cursor: pointer; }
+        .q-box.current { border: 2px solid var(--blue); color: var(--blue); background: #f0f7ff; }
         .q-box.filled { background: var(--success); color: white; border-color: var(--success); }
 
-        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; z-index: 1000; }
         .btn-nav { flex: 1; padding: 16px; border-radius: 12px; border: none; font-weight: bold; color: white; font-size: 16px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false">
 
     <div id="login-screen">
         <div class="login-card">
-            <h2>PTS BAHASA SUNDA KELAS 7</h2>
+            <h2 style="color:var(--primary);">RULES CBT</h2>
             <input type="text" id="nami-input" list="daftar-nami" placeholder="Pilih Nami..." autocomplete="off">
             <datalist id="daftar-nami"></datalist>
-            <input type="text" id="nisn-input" placeholder="NIS Otomatis" readonly>
-            <input type="text" id="kelas-input" placeholder="Kelas Otomatis" readonly>
+            <input type="text" id="nisn-input" placeholder="NIS" readonly style="background:#f5f5f5;">
+            <input type="text" id="kelas-input" placeholder="Kelas" readonly style="background:#f5f5f5;">
             <button id="btn-login" class="btn-start" onclick="startExam()" disabled>LOADING...</button>
         </div>
     </div>
@@ -128,15 +94,16 @@
                 </div>
             </div>
 
-            <div class="sidebar">
+            <div style="background:white; border-radius:20px; padding:20px; margin-top:20px;">
+                <div style="font-size:0.8rem; font-weight:bold; color:#888;">NOMOR SOAL:</div>
                 <div class="grid-nav" id="nav-grid"></div>
-                <button class="btn-start" onclick="confirmFinish()" style="margin-top:20px; background:var(--primary);">KIRIM</button>
+                <button class="btn-start" onclick="confirmFinish()" style="margin-top:25px; background:var(--primary);">RENGSE UJIAN</button>
             </div>
         </div>
 
         <div class="q-footer">
-            <button class="btn-nav" style="background:#95a5a6;" onclick="move(-1)">KIRI</button>
-            <button class="btn-nav" style="background:var(--blue);" onclick="move(1)">KATUHU</button>
+            <button class="btn-nav" style="background:#bdc3c7;" onclick="move(-1)">← KIRI</button>
+            <button class="btn-nav" style="background:var(--blue);" onclick="move(1)">KATUHU →</button>
         </div>
     </div>
 
@@ -155,10 +122,11 @@
                     if(f) { document.getElementById('nisn-input').value = f.nis; document.getElementById('kelas-input').value = f.kelas; }
                 });
                 document.getElementById('btn-login').disabled = false;
-                document.getElementById('btn-login').innerText = "MULAI";
-            } catch (e) { alert("Server Error!"); }
+                document.getElementById('btn-login').innerText = "MULAI UJIAN";
+            } catch (e) { alert("Server Error! Cobi refresh."); }
         };
 
+        // DATA MASTER SOAL (JAWABAN DISUMPUTKEUN DINA KONCI 'K')
         const masterSoal = [
             { id: 1, q: "Manakah lambang aksara Sunda pikeun sora 'KA'?", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
             { id: 2, q: "Manakah lambang aksara Sunda pikeun sora 'LA'?", img: "ᮜ", o: {a:"RA", b:"LA", c:"WA", d:"YA"}, k: "b" },
@@ -202,14 +170,16 @@
             const grid = document.getElementById('nav-grid'); grid.innerHTML = "";
             masterSoal.forEach((_, i) => {
                 const b = document.createElement('div'); b.className = 'q-box'; b.id = `nav-${i}`; b.innerText = i + 1;
-                b.onclick = () => { currentIdx = i; render(); };
+                b.onclick = () => { currentIdx = i; render(); window.scrollTo(0,0); };
                 grid.appendChild(b);
             });
         }
 
         function render() {
             const s = masterSoal[currentIdx];
+            // FIXED: Ngan nampilkeun soal wungkul [cite: 2026-02-22]
             document.getElementById('q-text').innerText = (currentIdx + 1) + ". " + s.q;
+            
             const box = document.getElementById('aksara-box');
             box.innerText = s.img; box.style.display = s.img==="" ? "none":"flex";
             
@@ -239,7 +209,7 @@
             });
         }
 
-        function move(d) { currentIdx += d; if(currentIdx < 0) currentIdx=0; if(currentIdx >= masterSoal.length) currentIdx=masterSoal.length-1; render(); }
+        function move(d) { currentIdx += d; if(currentIdx < 0) currentIdx=0; if(currentIdx >= masterSoal.length) currentIdx=masterSoal.length-1; render(); window.scrollTo(0,0); }
 
         function startTimer() {
             const t = setInterval(() => {
@@ -250,7 +220,7 @@
             }, 1000);
         }
 
-        function confirmFinish() { if(confirm("Yakin?")) finish(); }
+        function confirmFinish() { if(confirm("Yakin réngsé?")) finish(); }
 
         async function finish() {
             let correct = 0;
@@ -260,7 +230,14 @@
             try {
                 await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, kelas: muridLogin.kelas, peunteun: score.toFixed(0) }) });
             } catch (e) {}
-            document.querySelector('.main-content').innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:20px;"><h1>SKOR: ${score.toFixed(0)}</h1><button class="btn-start" onclick="location.reload()">LOGOUT</button></div>`;
+            document.querySelector('.main-content').innerHTML = `
+                <div style="text-align:center; padding:50px; background:white; border-radius:20px;">
+                    <h1 style="color:var(--primary);">SKOR AKHIR</h1>
+                    <div style="font-size:80px; color:var(--success); font-weight:bold; margin:20px 0;">${score.toFixed(0)}</div>
+                    <p>${muridLogin.nama}<br>Ujian parantos lekasan.</p>
+                    <button class="btn-start" onclick="location.reload()">LOGOUT</button>
+                </div>
+            `;
             document.querySelector('.q-footer').style.display = 'none';
         }
     </script>
