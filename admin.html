@@ -3,30 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN RULES - MONITORING CBT</title>
+    <title>ADMIN RULES - MONITORING REAL-TIME</title>
     <style>
-        :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --warning: #f1c40f; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
-        header { background: var(--primary); color: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         
+        header { 
+            background: var(--primary); color: white; padding: 20px; border-radius: 15px; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .stat-card h3 { margin: 0; font-size: 14px; color: #888; }
+        .stat-card h3 { margin: 0; font-size: 12px; color: #888; text-transform: uppercase; }
         .stat-card p { margin: 5px 0 0; font-size: 24px; font-weight: bold; color: var(--primary); }
 
-        .table-container { background: white; border-radius: 15px; padding: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow-x: auto; }
+        .table-container { 
+            background: white; border-radius: 15px; padding: 15px; overflow-x: auto; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: #f9f9f9; padding: 15px; text-align: left; color: #666; font-size: 14px; border-bottom: 2px solid #eee; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; color: #666; font-size: 13px; border-bottom: 2px solid #eee; }
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
-        
-        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        .status-aktif { background: #e3f2fd; color: #1976d2; }
-        .status-nyontek { background: #fee2e2; color: #dc2626; animation: blink 1s infinite; }
-        .status-selesai { background: #dcfce7; color: #166534; }
-        
-        @keyframes blink { 50% { opacity: 0.5; } }
 
-        .btn-refresh { background: white; color: var(--primary); border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .status-aktif { background: #e3f2fd; color: #1976d2; }
+        .status-nyontek { 
+            background: #fee2e2; color: #dc2626; 
+            animation: pulse-red 1s infinite;
+        }
+        .status-selesai { background: #dcfce7; color: #166534; }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+
+        .btn-refresh { 
+            background: white; color: var(--primary); border: none; padding: 10px 20px; 
+            border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
         .btn-refresh:hover { background: #eee; }
     </style>
 </head>
@@ -35,85 +54,86 @@
     <header>
         <div>
             <h1 style="margin:0; font-size: 20px;">RULES MONITORING</h1>
-            <p style="margin:0; font-size: 12px; opacity: 0.8;">Data otomatis update unggal 5 detik</p>
+            <p style="margin:0; font-size: 12px; opacity: 0.8;">Data Tab: RekapNilai</p>
         </div>
         <button class="btn-refresh" onclick="loadData()">REFRESH DATA</button>
     </header>
 
     <div class="stats-container">
-        <div class="stat-card"><h3>TOTAL MURID</h3><p id="stat-total">0</p></div>
-        <div class="stat-card"><h3>AKTIF</h3><p id="stat-aktif" style="color:var(--blue);">0</p></div>
-        <div class="stat-card"><h3>NYONTEK</h3><p id="stat-nyontek" style="color:var(--danger);">0</p></div>
-        <div class="stat-card"><h3>SELESAI</h3><p id="stat-selesai" style="color:var(--success);">0</p></div>
+        <div class="stat-card"><h3>Total Murid</h3><p id="stat-total">0</p></div>
+        <div class="stat-card"><h3>Sedang Ujian</h3><p id="stat-aktif" style="color:#1976d2;">0</p></div>
+        <div class="stat-card"><h3>Nyontek</h3><p id="stat-nyontek" style="color:var(--danger);">0</p></div>
+        <div class="stat-card"><h3>Selesai</h3><p id="stat-selesai" style="color:var(--success);">0</p></div>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>NAMI MURID</th>
+                    <th>WAKTU</th>
+                    <th>NAMI SISWA</th>
                     <th>NIS</th>
-                    <th>STATUS</th>
+                    <th>KELAS</th>
                     <th>NILAI</th>
                     <th>CHEAT</th>
-                    <th>WAKTU UPDATE</th>
+                    <th>STATUS</th>
                 </tr>
             </thead>
-            <tbody id="admin-table-body">
-                </tbody>
+            <tbody id="admin-body">
+                <tr><td colspan="7" style="text-align:center; padding:50px;">Ngantosan data...</td></tr>
+            </tbody>
         </table>
     </div>
 
     <script>
-        // Sesuikeun sareng SCRIPT_URL Akang
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykzhtYWoiVdJKl4SWBrokgalihZOJpZRcwmdOkgAm_cb3yYanp-6iF0bD_DOfM_GZ3/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6Ef7CfyJlMVy78391qO1X6H5ERi281jLTYaU1oun1dVONJnHjASBn9MAKMrVkHovC/exec";
 
         async function loadData() {
             try {
-                // Tambihan ?sheet=Monitoring (atawa duka naon nami tab monitor Akang dina Sheet)
-                const res = await fetch(SCRIPT_URL + "?sheet=Monitoring"); 
+                // Tarik data khusus tina tab RekapNilai (Sheet2)
+                const res = await fetch(SCRIPT_URL + "?sheet=RekapNilai");
                 const data = await res.json();
-                renderTable(data);
-                updateStats(data);
+                
+                const tbody = document.getElementById('admin-body');
+                tbody.innerHTML = "";
+                
+                // Urutkeun ti nu panganyarna (Reverse)
+                data.reverse().forEach(m => {
+                    // Cek status kanggo warna badge
+                    let statusTxt = (m.Status || m.status || "AKTIF").toUpperCase();
+                    let stClass = "status-aktif";
+                    if(statusTxt === "NYONTEK") stClass = "status-nyontek";
+                    if(statusTxt === "SELESAI") stClass = "status-selesai";
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-size:11px; color:#888;">${m.Waktu || m.timestamp || '-'}</td>
+                        <td style="font-weight:bold; color:#333;">${m.Nami || m.nama || ''}</td>
+                        <td>${m.NIS || m.nis || '-'}</td>
+                        <td style="font-weight:bold;">${m.Kelas || m.kelas || '-'}</td>
+                        <td style="font-size:18px; font-weight:bold; color:var(--primary);">${m.Peunteun || m.peunteun || 0}</td>
+                        <td style="color:var(--danger); font-weight:bold;">${m.Cheat || m.cheat || 0}x</td>
+                        <td><span class="status-badge ${stClass}">${statusTxt}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Update Statistik
+                document.getElementById('stat-total').innerText = data.length;
+                document.getElementById('stat-aktif').innerText = data.filter(x => (x.Status||x.status) === "AKTIF").length;
+                document.getElementById('stat-nyontek').innerText = data.filter(x => (x.Status||x.status) === "NYONTEK").length;
+                document.getElementById('stat-selesai').innerText = data.filter(x => (x.Status||x.status) === "SELESAI").length;
+
             } catch (e) {
-                console.error("Gagal nyandak data:", e);
+                console.error("Gagal narik data:", e);
             }
         }
 
-        function renderTable(data) {
-            const tbody = document.getElementById('admin-table-body');
-            tbody.innerHTML = "";
-            
-            // Urutkeun dumasar waktu panganyarna (opsional)
-            data.reverse().forEach(m => {
-                const tr = document.createElement('tr');
-                
-                let statusClass = "status-aktif";
-                if(m.status === "NYONTEK") statusClass = "status-nyontek";
-                if(m.status === "SELESAI") statusClass = "status-selesai";
-
-                tr.innerHTML = `
-                    <td style="font-weight:bold;">${m.nama || m.Nami}</td>
-                    <td>${m.nis || m.NIS}</td>
-                    <td><span class="status-badge ${statusClass}">${m.status || 'OFFLINE'}</span></td>
-                    <td style="font-weight:bold; color:var(--primary)">${m.peunteun || 0}</td>
-                    <td style="color:var(--danger); font-weight:bold;">${m.cheat || 0}x</td>
-                    <td style="color:#888; font-size:12px;">${m.timestamp || '-'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateStats(data) {
-            document.getElementById('stat-total').innerText = data.length;
-            document.getElementById('stat-aktif').innerText = data.filter(m => m.status === "AKTIF").length;
-            document.getElementById('stat-nyontek').innerText = data.filter(m => m.status === "NYONTEK").length;
-            document.getElementById('stat-selesai').innerText = data.filter(m => m.status === "SELESAI").length;
-        }
-
-        // Jalankeun otomatis
+        // Jalankeun otomatis unggal 5 detik
+        setInterval(loadData, 5000);
+        
+        // Jalankeun pas munggaran dibuka
         loadData();
-        setInterval(loadData, 5000); // Update unggal 5 detik
     </script>
 </body>
 </html>
