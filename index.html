@@ -129,8 +129,8 @@
     </div>
 
     <script>
-        // URL SCRIPT ANU PARANTOS JALAN
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzP7yxRacAIVieKB5aZhkwQXxxMlSFeHzCVYnFnWZSeHOMfvkTOWqBV-akWxGknfhg1/exec";
+        // URL SCRIPT ANU PARANTOS JALAN (REKAP: REKAPNILAI)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHQzo0mQrzM6q8uX2qzi55ASmyWs7s-1cOjRj-EDTnm9UJSO6Pc2CWNRjZ0wLycbD_/exec";
 
         let dbSiswa = [];
         let currentIdx = 0;
@@ -275,6 +275,7 @@
             `;
 
             try {
+                // KIRIM DATA KA TAB REKAPNILAI
                 await fetch(SCRIPT_URL, {
                     method: "POST",
                     mode: "no-cors",
