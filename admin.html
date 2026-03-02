@@ -3,76 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN RULES - MONITORING FIX</title>
+    <title>ADMIN RULES - LIGHT</title>
     <style>
-        :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
-        header { background: var(--primary); color: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .tab-menu { display: flex; gap: 5px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #ddd; color: #666; font-size: 11px; }
+        :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 10px; font-size: 14px; }
+        
+        /* HEADER RINGAN */
+        header { background: var(--primary); color: white; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .tab-menu { display: flex; gap: 4px; margin-bottom: 10px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #ddd; font-size: 11px; color: #555; }
         .tab-btn.active { background: var(--primary); color: white; }
-        .control-panel { background: white; padding: 12px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 10px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        select { padding: 10px; border-radius: 8px; border: 1px solid #ddd; outline: none; min-width: 130px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        @media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-        .stat-card { background: white; padding: 12px; border-radius: 10px; text-align: center; border-bottom: 3px solid #eee; }
-        .stat-card h3 { margin: 0; font-size: 10px; color: #888; text-transform: uppercase; }
-        .stat-card p { margin: 5px 0 0; font-size: 20px; font-weight: bold; }
-        .table-container { background: white; border-radius: 12px; padding: 10px; overflow-x: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: #f8f9fa; padding: 12px 10px; text-align: left; color: #666; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
-        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+
+        /* CARDS COMPACT */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+        .stat-card { background: white; padding: 8px 4px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .stat-card h3 { margin: 0; font-size: 9px; color: #888; text-transform: uppercase; }
+        .stat-card p { margin: 2px 0 0; font-size: 16px; font-weight: bold; color: var(--primary); }
+
+        .table-container { background: white; border-radius: 10px; overflow-x: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th { background: #f8f9fa; padding: 10px 8px; text-align: left; font-size: 10px; color: #666; border-bottom: 1px solid #eee; }
+        td { padding: 8px; border-bottom: 1px solid #f9f9f9; font-size: 12px; }
+
+        .status-badge { padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
         .st-aktif { background: #e3f2fd; color: #1976d2; }
-        .st-nyontek { background: #fee2e2; color: #dc2626; animation: blinker 1s infinite; }
+        .st-nyontek { background: #fee2e2; color: #dc2626; }
         .st-selesai { background: #dcfce7; color: #166534; }
-        .st-absent { background: #fef3c7; color: #d97706; }
-        @keyframes blinker { 50% { opacity: 0.4; } }
+        
+        .btn-refresh { background: #fff; color: var(--primary); border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 11px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h2 style="margin:0; font-size: 18px;">RULES MONITORING</h2>
-        <button onclick="loadData()" style="padding:8px 15px; border-radius:6px; border:none; font-weight:bold; cursor:pointer;">🔄 REFRESH</button>
+        <h2 style="margin:0; font-size: 16px;">RULES MONITORING</h2>
+        <button class="btn-refresh" onclick="loadData()">🔄 REFRESH</button>
     </header>
 
     <div class="tab-menu">
-        <button id="btn-mon" class="tab-btn active" onclick="switchTab('monitoring')">LIVE MONITORING</button>
-        <button id="btn-abs" class="tab-btn" onclick="switchTab('absensi')">ACAN UJIAN</button>
+        <button id="btn-mon" class="tab-btn active" onclick="switchTab('monitoring')">LIVE</button>
+        <button id="btn-abs" class="tab-btn" onclick="switchTab('absensi')">BELUM UJIAN</button>
     </div>
 
-    <div class="control-panel">
-        <select id="filter-kelas" onchange="renderAll()">
-            <option value="SEMUA">-- Sadayana Kelas --</option>
-        </select>
-        <button onclick="exportExcel()" style="background:var(--success); color:white; border:none; padding:10px 12px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:11px;">📊 DOWNLOAD</button>
+    <div class="stats-grid">
+        <div class="stat-card"><h3>TOTAL</h3><p id="stat-total">0</p></div>
+        <div class="stat-card"><h3>AKTIF</h3><p id="stat-aktif" style="color:#1976d2;">0</p></div>
+        <div class="stat-card"><h3>NYONTEK</h3><p id="stat-nyontek" style="color:var(--danger);">0</p></div>
+        <div class="stat-card"><h3>BERES</h3><p id="stat-selesai" style="color:var(--success);">0</p></div>
     </div>
 
-    <div id="view-monitoring">
-        <div class="stats-grid">
-            <div class="stat-card"><h3>TOTAL ASUP</h3><p id="stat-total">0</p></div>
-            <div class="stat-card" style="border-color: #3498db;"><h3>AKTIF</h3><p id="stat-aktif" style="color:#3498db;">0</p></div>
-            <div class="stat-card" style="border-color: var(--danger);"><h3>NYONTEK</h3><p id="stat-nyontek" style="color:var(--danger);">0</p></div>
-            <div class="stat-card" style="border-color: var(--success);"><h3>SELESAI</h3><p id="stat-selesai" style="color:var(--success);">0</p></div>
-        </div>
-        <div class="table-container">
-            <table>
-                <thead><tr><th>WAKTU</th><th>NAMI</th><th>NIS</th><th>KELAS</th><th>NILAI</th><th>CHT</th><th>STATUS</th></tr></thead>
-                <tbody id="body-monitoring"></tbody>
-            </table>
-        </div>
+    <div id="view-monitoring" class="table-container">
+        <table>
+            <thead><tr><th>NAMI</th><th>NIS</th><th>KLS</th><th>NILAI</th><th>CHT</th><th>ST</th></tr></thead>
+            <tbody id="body-monitoring"></tbody>
+        </table>
     </div>
 
-    <div id="view-absensi" style="display:none;">
-        <div class="stat-card" style="margin-bottom:15px; border-color:var(--danger);"><p id="stat-absent" style="font-size:30px; color:var(--danger);">0</p><h3>MURID ACAN LOGIN</h3></div>
-        <div class="table-container">
-            <table>
-                <thead><tr><th>NAMI MURID</th><th>NIS</th><th>KELAS</th><th>STATUS</th></tr></thead>
-                <tbody id="body-absent"></tbody>
-            </table>
-        </div>
+    <div id="view-absensi" class="table-container" style="display:none;">
+        <table>
+            <thead><tr><th>NAMI MURID</th><th>NIS</th><th>KELAS</th></tr></thead>
+            <tbody id="body-absent"></tbody>
+        </table>
     </div>
 
     <script>
@@ -87,68 +80,49 @@
                 ]);
                 rawData = await resRekap.json();
                 allSiswa = await resSiswa.json();
-                updateDropdown();
                 renderAll();
-            } catch (e) { console.error(e); }
-        }
-
-        function updateDropdown() {
-            const select = document.getElementById('filter-kelas');
-            const current = select.value;
-            const listKelas = [...new Set(allSiswa.map(m => m.Kelas || m.kelas || m.KELAS || Object.values(m)[2]))].filter(Boolean).sort();
-            select.innerHTML = '<option value="SEMUA">-- Sadayana Kelas --</option>';
-            listKelas.forEach(k => { select.innerHTML += `<option value="${k}">${k}</option>`; });
-            select.value = current;
+            } catch (e) { console.log("Error skip..."); }
         }
 
         function renderAll() {
-            const filter = document.getElementById('filter-kelas').value;
-            
-            // 1. MONITORING RENDER (ANTI-NOL)
+            // RENDER MONITORING
             const tbodyMon = document.getElementById('body-monitoring');
             tbodyMon.innerHTML = "";
-            const filteredMon = rawData.filter(m => {
-                const k = m.Kelas || m.kelas || m.KELAS || "";
-                return filter === "SEMUA" || k === filter;
-            });
-            [...filteredMon].reverse().forEach(m => {
+            [...rawData].reverse().slice(0, 50).forEach(m => { // Watesan 50 data panganyarna meh HP teu beurat
                 const s = (m.Status || m.status || "AKTIF").toUpperCase();
                 const cls = s === "NYONTEK" ? "st-nyontek" : (s === "SELESAI" ? "st-selesai" : "st-aktif");
                 tbodyMon.innerHTML += `<tr>
-                    <td style="font-size:10px; color:#999;">${m.Waktu || m.waktu || m.timestamp || '-'}</td>
-                    <td style="font-weight:600;">${(m.Nami || m.nami || m.nama || '').toLowerCase()}</td>
-                    <td>${m.NIS || m.nis || '-'}</td>
-                    <td>${m.Kelas || m.kelas || '-'}</td>
-                    <td style="font-size:16px; font-weight:bold; color:var(--primary);">${m.Peunteun || m.peunteun || 0}</td>
-                    <td style="color:var(--danger); font-weight:bold;">${m.Cheat || m.cheat || 0}x</td>
-                    <td><span class="status-badge ${cls}">${s}</span></td>
+                    <td style="font-weight:600;">${(m.Nami || m.nami || '').toLowerCase()}</td>
+                    <td>${m.NIS || m.nis || ''}</td>
+                    <td>${m.Kelas || m.kelas || ''}</td>
+                    <td style="font-weight:bold; color:var(--primary);">${m.Peunteun || m.peunteun || 0}</td>
+                    <td>${m.Cheat || m.cheat || 0}</td>
+                    <td><span class="status-badge ${cls}">${s.substring(0,3)}</span></td>
                 </tr>`;
             });
 
-            // 2. ABSENT RENDER
+            // RENDER ABSENT
             const tbodyAbs = document.getElementById('body-absent');
             tbodyAbs.innerHTML = "";
-            const geusUjianNIS = rawData.map(m => String(m.NIS || m.nis || m.Nis || ""));
+            const geusUjianNIS = rawData.map(m => String(m.NIS || m.nis || ""));
             const belumUjian = allSiswa.filter(s => {
                 const n = String(s.NIS || s.nis || Object.values(s)[1] || "");
-                const k = s.Kelas || s.kelas || Object.values(s)[2] || "";
-                return (filter === "SEMUA" || k === filter) && !geusUjianNIS.includes(n);
-            });
+                return !geusUjianNIS.includes(n);
+            }).slice(0, 50);
+
             belumUjian.forEach(s => {
                 tbodyAbs.innerHTML += `<tr>
-                    <td style="font-weight:600;">${(s.Nami || s.nami || Object.values(s)[0])}</td>
-                    <td>${s.NIS || s.nis || Object.values(s)[1]}</td>
-                    <td>${s.Kelas || s.kelas || Object.values(s)[2]}</td>
-                    <td><span class="status-badge st-absent">BELUM LOGIN</span></td>
+                    <td>${(s.Nami || s.nami || Object.values(s)[0])}</td>
+                    <td>${s.NIS || s.nis || ''}</td>
+                    <td>${s.Kelas || s.kelas || ''}</td>
                 </tr>`;
             });
 
-            // Update Stats
-            document.getElementById('stat-total').innerText = filteredMon.length;
-            document.getElementById('stat-aktif').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "AKTIF").length;
-            document.getElementById('stat-nyontek').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "NYONTEK").length;
-            document.getElementById('stat-selesai').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "SELESAI").length;
-            document.getElementById('stat-absent').innerText = belumUjian.length;
+            // Stats update
+            document.getElementById('stat-total').innerText = rawData.length;
+            document.getElementById('stat-aktif').innerText = rawData.filter(x => (x.Status||x.status||"").toUpperCase() === "AKTIF").length;
+            document.getElementById('stat-nyontek').innerText = rawData.filter(x => (x.Status||x.status||"").toUpperCase() === "NYONTEK").length;
+            document.getElementById('stat-selesai').innerText = rawData.filter(x => (x.Status||x.status||"").toUpperCase() === "SELESAI").length;
         }
 
         function switchTab(tab) {
@@ -159,12 +133,8 @@
             document.getElementById('btn-abs').classList.toggle('active', tab === 'absensi');
         }
 
-        function exportExcel() {
-            const table = activeTab === 'monitoring' ? document.getElementById('view-monitoring').querySelector('table') : document.getElementById('view-absensi').querySelector('table');
-            window.open('data:application/vnd.ms-excel,' + encodeURIComponent(table.outerHTML));
-        }
-
-        setInterval(loadData, 8000);
+        // Refresh dijantenkeun 20 detik sakali meh HP teu panas
+        setInterval(loadData, 20000);
         loadData();
     </script>
 </body>
