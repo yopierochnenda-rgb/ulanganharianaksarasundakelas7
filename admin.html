@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN RULES - FULL MONITORING</title>
+    <title>ADMIN RULES - FULL REPORT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
         :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -15,8 +19,14 @@
         .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #ddd; font-size: 11px; color: #555; }
         .tab-btn.active { background: var(--primary); color: white; }
 
-        .filter-panel { background: white; padding: 8px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 8px; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .filter-panel { background: white; padding: 8px; border-radius: 8px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .filter-row { display: flex; gap: 8px; align-items: center; }
         select { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; outline: none; }
+
+        .action-btns { display: flex; gap: 5px; margin-top: 5px; }
+        .btn-action { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-excel { background: #27ae60; }
+        .btn-pdf { background: #e67e22; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
         .stat-card { background: white; padding: 8px 4px; border-radius: 8px; text-align: center; }
@@ -35,7 +45,6 @@
         .st-absent { background: #fef3c7; color: #d97706; }
         
         .btn-refresh { background: #fff; color: var(--primary); border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 11px; }
-        .btn-notif { background: var(--danger); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -45,18 +54,22 @@
         <button class="btn-refresh" onclick="loadData()">🔄 REFRESH</button>
     </header>
 
-    <button class="btn-notif" onclick="window.open('notif.html', '_blank')">⚠️ BUKA LAYAR NOTIF (INFOCUS)</button>
-
     <div class="tab-menu">
-        <button id="btn-mon" class="tab-btn active" onclick="switchTab('monitoring')">LIVE MONITORING</button>
+        <button id="btn-mon" class="tab-btn active" onclick="switchTab('monitoring')">MONITORING</button>
         <button id="btn-abs" class="tab-btn" onclick="switchTab('absensi')">BELUM UJIAN</button>
     </div>
 
     <div class="filter-panel">
-        <span style="font-size: 11px; font-weight: bold;">KELAS:</span>
-        <select id="filter-kelas" onchange="renderAll()">
-            <option value="SEMUA">-- SADAYANA --</option>
-        </select>
+        <div class="filter-row">
+            <span style="font-size: 11px; font-weight: bold;">KELAS:</span>
+            <select id="filter-kelas" onchange="renderAll()">
+                <option value="SEMUA">-- SEMUA --</option>
+            </select>
+        </div>
+        <div class="action-btns">
+            <button class="btn-action btn-excel" onclick="exportExcel()">📊 EXCEL</button>
+            <button class="btn-action btn-pdf" onclick="exportPDF()">📄 PDF</button>
+        </div>
     </div>
 
     <div class="stats-grid">
@@ -67,11 +80,11 @@
     </div>
 
     <div id="view-monitoring" class="table-container">
-        <table>
+        <table id="table-mon">
             <thead>
                 <tr>
                     <th>JAM</th>
-                    <th>NAMI</th>
+                    <th>NAMA</th>
                     <th>NIS</th>
                     <th>KLS</th>
                     <th>NILAI</th>
@@ -84,15 +97,15 @@
     </div>
 
     <div id="view-absensi" class="table-container" style="display:none;">
-        <table>
-            <thead><tr><th>NAMI MURID</th><th>NIS</th><th>KELAS</th><th>STATUS</th></tr></thead>
+        <table id="table-abs">
+            <thead><tr><th>NAMA SISWA</th><th>NIS</th><th>KELAS</th><th>STATUS</th></tr></thead>
             <tbody id="body-absent"></tbody>
         </table>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6Ef7CfyJlMVy78391qO1X6H5ERi281jLTYaU1oun1dVONJnHjASBn9MAKMrVkHovC/exec";
-        let rawData = [], allSiswa = [], activeTab = 'monitoring';
+        let rawData = [], allSiswa = [];
 
         async function loadData() {
             try {
@@ -104,24 +117,23 @@
                 allSiswa = await resSiswa.json();
                 updateDropdown();
                 renderAll();
-            } catch (e) { console.log("Error fetch..."); }
+            } catch (e) { alert("Refresh Gagal!"); }
         }
 
         function updateDropdown() {
             const select = document.getElementById('filter-kelas');
             const current = select.value;
             const listKelas = [...new Set(allSiswa.map(m => m.Kelas || m.kelas || Object.values(m)[2]))].filter(Boolean).sort();
-            select.innerHTML = '<option value="SEMUA">-- SADAYANA --</option>';
+            select.innerHTML = '<option value="SEMUA">-- SEMUA --</option>';
             listKelas.forEach(k => { select.innerHTML += `<option value="${k}">${k}</option>`; });
             select.value = current;
         }
 
         function renderAll() {
             const filter = document.getElementById('filter-kelas').value;
-            
-            // 1. RENDER MONITORING
             const tbodyMon = document.getElementById('body-monitoring');
             tbodyMon.innerHTML = "";
+            
             const filteredMon = rawData.filter(m => {
                 const k = m.Kelas || m.kelas || Object.values(m)[3] || "";
                 return filter === "SEMUA" || String(k).trim() === filter;
@@ -130,13 +142,12 @@
             [...filteredMon].reverse().forEach(m => {
                 let fullTime = m.Timestamp || m.timestamp || Object.values(m)[0] || "";
                 let jam = String(fullTime).includes(" ") ? fullTime.split(" ")[1].substring(0,5) : String(fullTime).substring(11,16);
-
                 const s = (m.Status || m.status || "AKTIF").toUpperCase();
                 const cls = s === "NYONTEK" ? "st-nyontek" : (s === "SELESAI" ? "st-selesai" : "st-aktif");
                 
                 tbodyMon.innerHTML += `<tr>
                     <td style="font-size:10px; color:#999;">${jam}</td>
-                    <td style="font-weight:600;">${(m.Nami || m.nami || '').toLowerCase()}</td>
+                    <td style="font-weight:600;">${(m.Nami || m.nami || m.Nama || '').toLowerCase()}</td>
                     <td>${m.NIS || m.nis || ''}</td>
                     <td>${m.Kelas || m.kelas || ''}</td>
                     <td style="font-weight:bold; color:var(--primary);">${m.Peunteun || m.peunteun || 0}</td>
@@ -145,7 +156,6 @@
                 </tr>`;
             });
 
-            // 2. RENDER ABSENT
             const tbodyAbs = document.getElementById('body-absent');
             tbodyAbs.innerHTML = "";
             const geusUjianNIS = rawData.map(m => String(m.NIS || m.nis || ""));
@@ -154,7 +164,6 @@
                 const k = s.Kelas || s.kelas || Object.values(s)[2] || "";
                 return (filter === "SEMUA" || k === filter) && !geusUjianNIS.includes(n);
             });
-
             belumUjian.forEach(s => {
                 tbodyAbs.innerHTML += `<tr>
                     <td>${(s.Nami || s.nami || Object.values(s)[0])}</td>
@@ -170,8 +179,22 @@
             document.getElementById('stat-selesai').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "SELESAI").length;
         }
 
+        function exportExcel() {
+            const table = document.getElementById(document.getElementById('view-monitoring').style.display !== 'none' ? 'table-mon' : 'table-abs');
+            const wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, "Laporan_RULES.xlsx");
+        }
+
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const tableId = document.getElementById('view-monitoring').style.display !== 'none' ? '#table-mon' : '#table-abs';
+            doc.text("LAPORAN HASIL UJIAN - RULES", 14, 15);
+            doc.autoTable({ html: tableId, startY: 20, theme: 'grid' });
+            doc.save("Laporan_RULES.pdf");
+        }
+
         function switchTab(tab) {
-            activeTab = tab;
             document.getElementById('view-monitoring').style.display = tab === 'monitoring' ? 'block' : 'none';
             document.getElementById('view-absensi').style.display = tab === 'absensi' ? 'block' : 'none';
             document.getElementById('btn-mon').classList.toggle('active', tab === 'monitoring');
