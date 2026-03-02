@@ -3,54 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN RULES - FULL REPORT</title>
+    <title>RULES ADMIN - FAST MONITOR</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    
     <style>
         :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; font-size: 14px; }
-        
-        header { background: var(--primary); color: white; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        
-        .tab-menu { display: flex; gap: 4px; margin-bottom: 10px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #ddd; font-size: 11px; color: #555; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; font-size: 13px; }
+        header { background: var(--primary); color: white; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .tab-menu { display: flex; gap: 4px; margin-bottom: 8px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #ddd; font-size: 11px; color: #555; }
         .tab-btn.active { background: var(--primary); color: white; }
-
-        .filter-panel { background: white; padding: 8px; border-radius: 8px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .filter-row { display: flex; gap: 8px; align-items: center; }
+        .filter-panel { background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .filter-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
         select { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; outline: none; }
-
-        .action-btns { display: flex; gap: 5px; margin-top: 5px; }
-        .btn-action { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-excel { background: #27ae60; }
-        .btn-pdf { background: #e67e22; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
-        .stat-card { background: white; padding: 8px 4px; border-radius: 8px; text-align: center; }
-        .stat-card h3 { margin: 0; font-size: 9px; color: #888; text-transform: uppercase; }
-        .stat-card p { margin: 2px 0 0; font-size: 16px; font-weight: bold; color: var(--primary); }
-
-        .table-container { background: white; border-radius: 10px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 550px; }
-        th { background: #f8f9fa; padding: 10px 8px; text-align: left; font-size: 10px; color: #666; border-bottom: 1px solid #eee; }
+        .action-btns { display: flex; gap: 5px; }
+        .btn-action { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 10px; font-weight: bold; color: white; cursor: pointer; }
+        .btn-excel { background: #27ae60; } .btn-pdf { background: #e67e22; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 8px; }
+        .stat-card { background: white; padding: 6px 2px; border-radius: 8px; text-align: center; }
+        .stat-card h3 { margin: 0; font-size: 8px; color: #888; text-transform: uppercase; }
+        .stat-card p { margin: 0; font-size: 14px; font-weight: bold; color: var(--primary); }
+        .table-container { background: white; border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th { background: #f8f9fa; padding: 8px; text-align: left; font-size: 10px; color: #666; border-bottom: 1px solid #eee; position: sticky; top: 0; }
         td { padding: 8px; border-bottom: 1px solid #f9f9f9; font-size: 12px; }
-
-        .status-badge { padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
+        .status-badge { padding: 2px 5px; border-radius: 4px; font-size: 9px; font-weight: bold; }
         .st-aktif { background: #e3f2fd; color: #1976d2; }
         .st-nyontek { background: #fee2e2; color: #dc2626; }
         .st-selesai { background: #dcfce7; color: #166534; }
         .st-absent { background: #fef3c7; color: #d97706; }
-        
-        .btn-refresh { background: #fff; color: var(--primary); border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 11px; }
+        .btn-refresh { background: #fff; color: var(--primary); border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header>
-        <h2 style="margin:0; font-size: 16px;">RULES ADMIN</h2>
+        <h2 style="margin:0; font-size: 14px;">RULES MONITOR</h2>
         <button class="btn-refresh" onclick="loadData()">🔄 REFRESH</button>
     </header>
 
@@ -61,7 +51,7 @@
 
     <div class="filter-panel">
         <div class="filter-row">
-            <span style="font-size: 11px; font-weight: bold;">KELAS:</span>
+            <span style="font-weight: bold; font-size: 11px;">KELAS:</span>
             <select id="filter-kelas" onchange="renderAll()">
                 <option value="SEMUA">-- SEMUA --</option>
             </select>
@@ -105,7 +95,7 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6Ef7CfyJlMVy78391qO1X6H5ERi281jLTYaU1oun1dVONJnHjASBn9MAKMrVkHovC/exec";
-        let rawData = [], allSiswa = [];
+        let rawData = [], allSiswa = [], activeTab = 'monitoring';
 
         async function loadData() {
             try {
@@ -117,22 +107,22 @@
                 allSiswa = await resSiswa.json();
                 updateDropdown();
                 renderAll();
-            } catch (e) { alert("Refresh Gagal!"); }
+            } catch (e) { console.log("Silent refresh..."); }
         }
 
         function updateDropdown() {
             const select = document.getElementById('filter-kelas');
-            const current = select.value;
+            if (select.options.length > 1) return; // Ulah update dropdown terus mun geus aya isina
             const listKelas = [...new Set(allSiswa.map(m => m.Kelas || m.kelas || Object.values(m)[2]))].filter(Boolean).sort();
-            select.innerHTML = '<option value="SEMUA">-- SEMUA --</option>';
             listKelas.forEach(k => { select.innerHTML += `<option value="${k}">${k}</option>`; });
-            select.value = current;
         }
 
         function renderAll() {
             const filter = document.getElementById('filter-kelas').value;
+            
+            // 1. FAST RENDER MONITORING
             const tbodyMon = document.getElementById('body-monitoring');
-            tbodyMon.innerHTML = "";
+            let htmlBuffer = "";
             
             const filteredMon = rawData.filter(m => {
                 const k = m.Kelas || m.kelas || Object.values(m)[3] || "";
@@ -140,58 +130,48 @@
             });
             
             [...filteredMon].reverse().forEach(m => {
-                let fullTime = m.Timestamp || m.timestamp || Object.values(m)[0] || "";
-                let jam = String(fullTime).includes(" ") ? fullTime.split(" ")[1].substring(0,5) : String(fullTime).substring(11,16);
-                const s = (m.Status || m.status || "AKTIF").toUpperCase();
+                let t = m.Timestamp || Object.values(m)[0] || "";
+                let jam = String(t).includes(" ") ? t.split(" ")[1].substring(0,5) : String(t).substring(11,16);
+                const s = (m.Status || "AKTIF").toUpperCase();
                 const cls = s === "NYONTEK" ? "st-nyontek" : (s === "SELESAI" ? "st-selesai" : "st-aktif");
                 
-                tbodyMon.innerHTML += `<tr>
-                    <td style="font-size:10px; color:#999;">${jam}</td>
-                    <td style="font-weight:600;">${(m.Nami || m.nami || m.Nama || '').toLowerCase()}</td>
-                    <td>${m.NIS || m.nis || ''}</td>
-                    <td>${m.Kelas || m.kelas || ''}</td>
-                    <td style="font-weight:bold; color:var(--primary);">${m.Peunteun || m.peunteun || 0}</td>
-                    <td>${m.Cheat || m.cheat || 0}</td>
+                htmlBuffer += `<tr>
+                    <td style="font-size:10px; color:#999; font-family:monospace;">${jam}</td>
+                    <td style="font-weight:600;">${(m.Nami || m.Nama || '').toLowerCase()}</td>
+                    <td>${m.NIS || ''}</td>
+                    <td>${m.Kelas || ''}</td>
+                    <td style="font-weight:bold; color:var(--primary); text-align:center;">${m.Peunteun || 0}</td>
+                    <td style="text-align:center;">${m.Cheat || 0}</td>
                     <td><span class="status-badge ${cls}">${s.substring(0,3)}</span></td>
                 </tr>`;
             });
+            tbodyMon.innerHTML = htmlBuffer;
 
+            // 2. FAST RENDER ABSENT
             const tbodyAbs = document.getElementById('body-absent');
-            tbodyAbs.innerHTML = "";
-            const geusUjianNIS = rawData.map(m => String(m.NIS || m.nis || ""));
+            let absBuffer = "";
+            const geusUjianNIS = rawData.map(m => String(m.NIS || ""));
             const belumUjian = allSiswa.filter(s => {
-                const n = String(s.NIS || s.nis || Object.values(s)[1] || "");
-                const k = s.Kelas || s.kelas || Object.values(s)[2] || "";
+                const n = String(s.NIS || Object.values(s)[1] || "");
+                const k = s.Kelas || Object.values(s)[2] || "";
                 return (filter === "SEMUA" || k === filter) && !geusUjianNIS.includes(n);
             });
+
             belumUjian.forEach(s => {
-                tbodyAbs.innerHTML += `<tr>
-                    <td>${(s.Nami || s.nami || Object.values(s)[0])}</td>
-                    <td>${s.NIS || s.nis || ''}</td>
-                    <td>${s.Kelas || s.kelas || ''}</td>
+                absBuffer += `<tr>
+                    <td>${(s.Nami || Object.values(s)[0])}</td>
+                    <td>${s.NIS || ''}</td>
+                    <td>${s.Kelas || ''}</td>
                     <td><span class="status-badge st-absent">BELUM</span></td>
                 </tr>`;
             });
+            tbodyAbs.innerHTML = absBuffer;
 
+            // Update Stats
             document.getElementById('stat-total').innerText = filteredMon.length;
-            document.getElementById('stat-aktif').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "AKTIF").length;
-            document.getElementById('stat-nyontek').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "NYONTEK").length;
-            document.getElementById('stat-selesai').innerText = filteredMon.filter(x => (x.Status||x.status||"").toUpperCase() === "SELESAI").length;
-        }
-
-        function exportExcel() {
-            const table = document.getElementById(document.getElementById('view-monitoring').style.display !== 'none' ? 'table-mon' : 'table-abs');
-            const wb = XLSX.utils.table_to_book(table);
-            XLSX.writeFile(wb, "Laporan_RULES.xlsx");
-        }
-
-        function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const tableId = document.getElementById('view-monitoring').style.display !== 'none' ? '#table-mon' : '#table-abs';
-            doc.text("LAPORAN HASIL UJIAN - RULES", 14, 15);
-            doc.autoTable({ html: tableId, startY: 20, theme: 'grid' });
-            doc.save("Laporan_RULES.pdf");
+            document.getElementById('stat-aktif').innerText = filteredMon.filter(x => (x.Status||"").toUpperCase() === "AKTIF").length;
+            document.getElementById('stat-nyontek').innerText = filteredMon.filter(x => (x.Status||"").toUpperCase() === "NYONTEK").length;
+            document.getElementById('stat-selesai').innerText = filteredMon.filter(x => (x.Status||"").toUpperCase() === "SELESAI").length;
         }
 
         function switchTab(tab) {
@@ -202,7 +182,22 @@
             renderAll();
         }
 
-        setInterval(loadData, 15000);
+        function exportExcel() {
+            const tableId = document.getElementById('view-monitoring').style.display !== 'none' ? 'table-mon' : 'table-abs';
+            const wb = XLSX.utils.table_to_book(document.getElementById(tableId));
+            XLSX.writeFile(wb, "Report_RULES.xlsx");
+        }
+
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const tableId = document.getElementById('view-monitoring').style.display !== 'none' ? '#table-mon' : '#table-abs';
+            doc.text("LAPORAN RULES SYSTEM", 14, 15);
+            doc.autoTable({ html: tableId, startY: 20, theme: 'grid', styles: { fontSize: 8 } });
+            doc.save("Report_RULES.pdf");
+        }
+
+        setInterval(loadData, 10000); // Setel 10 detik meh rada anteng HPna
         loadData();
     </script>
 </body>
