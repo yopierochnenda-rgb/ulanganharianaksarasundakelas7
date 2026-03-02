@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RULES - SECURITY RADAR</title>
+    <style>
+        :root { --danger: #ff0000; --warning: #ffeb3b; --bg: #0a0a0a; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: var(--bg); 
+            color: #fff; 
+            margin: 0; 
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* SCANNER ANIMATION BG */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 15px var(--danger);
+            animation: scan 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            0% { top: 0; } 
+            100% { top: 100vh; }
+        }
+
+        header {
+            background: rgba(255, 0, 0, 0.15);
+            border-bottom: 2px solid var(--danger);
+            padding: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .alert-title { font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--danger); margin: 0; }
+        .sub-title { font-size: 14px; color: var(--warning); margin-top: 5px; letter-spacing: 2px; }
+
+        #container-nyontek {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            align-items: center;
+        }
+
+        .card-warning {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: emerge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-warning::before {
+            content: "CHEAT DETECTED";
+            position: absolute;
+            top: 5px; right: 10px;
+            font-size: 10px;
+            color: var(--danger);
+            font-weight: bold;
+            opacity: 0.5;
+        }
+
+        @keyframes emerge {
+            from { transform: scale(0.8) translateY(50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .info-murid { display: flex; flex-direction: column; }
+        .nami { font-size: 38px; font-weight: 800; color: #fff; text-transform: uppercase; margin: 0; }
+        .kelas { font-size: 20px; color: var(--warning); font-weight: 600; }
+
+        .status-box {
+            background: var(--danger);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 900;
+            text-align: center;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        #empty-state {
+            margin-top: 100px;
+            text-align: center;
+            opacity: 0.5;
+        }
+        .green-shield { font-size: 100px; color: #2ecc71; margin-bottom: 20px; }
+
+        /* FOOTER INFO */
+        footer { padding: 15px; text-align: center; font-size: 12px; color: #444; border-top: 1px solid #1a1a1a; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="alert-title">SISTEM MONITORING RULES</div>
+        <div class="sub-title">DETEKSI AKTIVITAS PINDAH LAYAR (ANTI-CHEAT)</div>
+    </header>
+
+    <div id="container-nyontek">
+        <div id="empty-state">
+            <div class="green-shield">🛡️</div>
+            <h2>SADAYANA MURID JUJUR</h2>
+            <p>Tacan aya aktivitas mencurigakeun dinten ieu.</p>
+        </div>
+    </div>
+
+    <footer>
+        RULES SYSTEM v2.0 - 2026 | SECURITY RADAR ACTIVE
+    </footer>
+
+    <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6Ef7CfyJlMVy78391qO1X6H5ERi281jLTYaU1oun1dVONJnHjASBn9MAKMrVkHovC/exec";
+        let previousCheatersCount = 0;
+
+        async function fetchCheaters() {
+            try {
+                const response = await fetch(SCRIPT_URL + "?sheet=RekapNilai");
+                const data = await response.json();
+
+                // Saring murid nu statusna NYONTEK
+                const cheaters = data.filter(m => {
+                    const status = (m.Status || m.status || "").toUpperCase();
+                    return status.includes("NYONTEK");
+                });
+
+                updateDisplay(cheaters);
+            } catch (err) {
+                console.error("Gagal narik data radar:", err);
+            }
+        }
+
+        function updateDisplay(list) {
+            const container = document.getElementById('container-nyontek');
+            const emptyState = document.getElementById('empty-state');
+            const alarm = document.getElementById('alarm-sound');
+
+            if (list.length === 0) {
+                container.innerHTML = "";
+                container.appendChild(emptyState);
+                previousCheatersCount = 0;
+            } else {
+                // Sora alarm mun aya nu anyar asup daptar
+                if (list.length > previousCheatersCount) {
+                    alarm.play().catch(e => console.log("Audio block: Perlu interaksi mimiti"));
+                }
+                previousCheatersCount = list.length;
+
+                container.innerHTML = "";
+                list.forEach(m => {
+                    const nama = m.Nami || m.nami || m.nama || "Unknown";
+                    const kls = m.Kelas || m.kelas || m.kls || "-";
+                    const cheatCount = m.Cheat || m.cheat || 1;
+
+                    container.innerHTML += `
+                        <div class="card-warning">
+                            <div class="info-murid">
+                                <div class="nami">${nama.toLowerCase()}</div>
+                                <div class="kelas">KELAS ${kls}</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="status-box">PELANGGARAN: ${cheatCount}x</div>
+                                <div style="margin-top:10px; color:var(--danger); font-size:12px; font-weight:bold;">OUT OF APP DETECTED</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // Mariksa unggal 4 detik meh HP Akang jeung Server teu beurat teuing
+        setInterval(fetchCheaters, 4000);
+        fetchCheaters();
+    </script>
+</body>
+</html>
