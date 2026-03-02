@@ -3,58 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RULES CBT - FIX AKSARA</title>
+    <title>RULES CBT - AKSARA SUNDA</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); overflow-x: hidden; }
-
-        /* --- LOGIN SCREEN --- */
-        #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 20px; }
-        .login-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; }
+        :root { --primary: #1a4d2e; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); overflow: hidden; }
+        
+        /* LOGIN */
+        #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #1a4d2e, #000); padding: 20px; position: fixed; width: 100%; z-index: 1000; }
+        .login-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; border: 3px solid var(--success); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; outline: none; }
         .btn-start { background: var(--success); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .btn-start:disabled { background: #ccc; }
 
-        /* --- INTERFACE --- */
-        #exam-interface { display: none; flex-direction: column; min-height: 100vh; }
-        header { background: white; padding: 15px 20px; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        /* INTERFACE */
+        #exam-interface { display: none; flex-direction: column; height: 100vh; width: 100vw; }
+        header { background: white; padding: 15px 20px; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .main-content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
 
-        .main-content { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 120px; }
-
-        /* --- SOAL & AKSARA --- */
-        .question-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        #q-text { font-weight: 700; margin-bottom: 20px; color: var(--primary); font-size: 1.1rem; }
-        .aksara-display { 
-            font-family: 'Noto Sans Sundanese', sans-serif;
-            font-size: 3.2rem; text-align: center; margin: 15px 0; padding: 25px; 
-            background: #fcfcfc; border-radius: 15px; border: 2px dashed #ddd; 
-            min-height: 120px; display: flex; align-items: center; justify-content: center;
-        }
-
-        /* --- OPTIONS TABLE --- */
-        .option-btn { display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 12px; cursor: pointer; overflow: hidden; }
-        .radio-cell { display: table-cell; vertical-align: middle; width: 55px; text-align: center; background: #f9f9f9; border-right: 1px solid #eee; }
-        .radio-cell input { transform: scale(1.6); }
-        .text-cell { display: table-cell; vertical-align: middle; padding: 18px 20px; font-size: 17px; font-weight: 600; color: #333; }
+        /* SOAL CARD */
+        .question-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .aksara-display { font-family: 'Noto Sans Sundanese', 'Segoe UI', sans-serif; font-size: 2.8rem; text-align: center; margin: 15px 0; padding: 15px; background: #fcfcfc; border-radius: 15px; border: 2px dashed #ddd; min-height: 80px; display: flex; align-items: center; justify-content: center; color: #1a4d2e; }
+        
+        .option-btn { display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 12px; cursor: pointer; }
+        .radio-cell { display: table-cell; vertical-align: middle; width: 50px; text-align: center; background: #f9f9f9; border-right: 1px solid #eee; }
+        .text-cell { display: table-cell; vertical-align: middle; padding: 15px; font-size: 16px; font-weight: 600; }
         .option-btn.active { border-color: var(--blue); background: #f0f7ff; }
 
-        /* --- NAVIGASI --- */
-        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
-        .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 10px; font-weight: bold; background: #fff; cursor: pointer; }
+        /* NAVIGATION */
+        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .q-box { border: 1px solid #ddd; padding: 10px 0; text-align: center; border-radius: 8px; font-weight: bold; background: #fff; cursor: pointer; }
         .q-box.current { border: 2px solid var(--blue); color: var(--blue); }
         .q-box.filled { background: var(--success); color: white; border-color: var(--success); }
 
         .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
-        .btn-nav { flex: 1; padding: 18px; border-radius: 15px; border: none; font-weight: bold; color: white; }
+        .btn-nav { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: bold; color: white; cursor: pointer; }
+
+        /* OVERLAY HEJO */
+        #cheat-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #27ae60; color: black; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="letter-spacing:2px;">PTS BAHASA SUNDA KELAS 7</h2>
+            <h1 style="color:var(--primary); margin:0; letter-spacing: 2px;">PTS BASA SUNDA KELAS 7</h1>
+            <p style="font-size:12px; color:#888; margin-bottom:20px;">UJIAN AKSARA SUNDA</p>
             <input type="text" id="nami-input" list="daftar-nami" placeholder="Pilih Nami...">
             <datalist id="daftar-nami"></datalist>
             <input type="text" id="nisn-input" placeholder="NIS Otomatis" readonly>
@@ -63,97 +57,115 @@
         </div>
     </div>
 
+    <div id="cheat-overlay">
+        <h1 style="font-size: 4rem;">🚨</h1>
+        <h2>ANDA NYOBA NYONTEK!</h2>
+        <p>Aktivitas kaluar tina aplikasi parantos kacatet.</p>
+        <button onclick="balikUjian()" style="padding: 15px 30px; background: black; color: white; border-radius: 12px; border: none; font-weight: bold;">BALIK DEUI</button>
+    </div>
+
     <div id="exam-interface">
         <header>
-            <div id="user-display" style="font-weight:bold;"></div>
-            <div id="timer" style="color:var(--danger); font-weight:bold;">30:00</div>
+            <div id="user-display" style="font-weight: 600; color: var(--primary);"></div>
+            <div id="timer" style="color:var(--danger); font-weight:bold; font-size:18px;">30:00</div>
         </header>
 
         <div class="main-content">
             <div class="question-card">
-                <div id="q-text"></div>
+                <div id="q-text" style="font-weight:bold; margin-bottom: 10px; color: #333;"></div>
                 <div id="aksara-box" class="aksara-display"></div>
-                <div class="options-container">
+                <div id="opt-container">
                     <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="a"></div><div class="text-cell" id="label-a"></div></label>
                     <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="b"></div><div class="text-cell" id="label-b"></div></label>
                     <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="c"></div><div class="text-cell" id="label-c"></div></label>
                     <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="d"></div><div class="text-cell" id="label-d"></div></label>
                 </div>
             </div>
-            <div style="background:white; border-radius:20px; padding:20px; margin-top:20px;">
+
+            <div style="background:white; border-radius:20px; padding:15px; margin-bottom: 20px;">
+                <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #888;">NAVIGASI NOMER:</p>
                 <div class="grid-nav" id="nav-grid"></div>
-                <button class="btn-start" onclick="confirmFinish()" style="margin-top:25px; width:100%; background:var(--primary);">KIRIM JAWABAN</button>
+                <button class="btn-start" onclick="confirmFinish()" style="margin-top:20px; background:var(--primary);">KIRIM JAWABAN</button>
             </div>
         </div>
 
         <div class="q-footer">
-            <button class="btn-nav" style="background:#bdc3c7;" onclick="move(-1)">KIRI</button>
+            <button class="btn-nav" style="background:#bdc3c7;" onclick="move(-1)">KÉNCA</button>
             <button class="btn-nav" style="background:var(--blue);" onclick="move(1)">KATUHU</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxNbwE1FPuZcoPzdYh_ZSGuv5L-JiIZpRLjFziKJiB7jz_fg5cRQalnB2KAEd3J7g/exec";
-        let dbSiswa = [], currentIdx = 0, answers = {}, timeRemaining = 30 * 60, muridLogin = null;
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykzhtYWoiVdJKl4SWBrokgalihZOJpZRcwmdOkgAm_cb3yYanp-6iF0bD_DOfM_GZ3/exec";
+        let dbSiswa = [], currentIdx = 0, answers = {}, timeRemaining = 30 * 60, muridLogin = null, countCheat = 0;
 
         const masterSoal = [
-            { id: 1, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
-            { id: 2, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮘ", o: {a:"PA", b:"BA", c:"MA", d:"WA"}, k: "b" },
-            { id: 3, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮙ", o: {a:"NA", b:"SA", c:"MA", d:"YA"}, k: "c" },
-            { id: 4, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮞ", o: {a:"SA", b:"KA", c:"RA", d:"LA"}, k: "a" },
-            { id: 5, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮝ", o: {a:"DA", b:"TA", c:"LA", d:"WA"}, k: "d" },
-            { id: 6, q: "Rarangken di luhur (i) disebutna...", img: "ᮤ", o: {a:"Panghulu", b:"Panyuku", c:"Pamepet", d:"Paneuleung"}, k: "a" },
-            { id: 7, q: "Rarangken di handap (u) disebutna...", img: "ᮥ", o: {a:"Panyuku", b:"Panyakra", c:"Pamingkal", d:"Pamaéh"}, k: "a" },
-            { id: 8, q: "Rarangken di gigir (o) disebutna...", img: "ᮧ", o: {a:"Panolong", b:"Paneled", c:"Panélé", d:"Pangwisad"}, k: "a" },
-            { id: 9, q: "Rarangken di luhur (e-ember) disebutna...", img: "ᮨ", o: {a:"Pamepet", b:"Paneuleung", c:"Panyecek", d:"Panglayar"}, k: "a" },
-            { id: 10, q: "Rarangken di luhur (eu) disebutna...", img: "ᮩ", o: {a:"Paneuleung", b:"Panghulu", c:"Pamepet", d:"Pamaéh"}, k: "a" },
-            { id: 11, q: "Kecap di handap ieu dibacana...", img: "ᮊᮛᮦᮓᮧᮊ᮪", o: {a:"Karédok", b:"Karedok", c:"Karidok", d:"Karudok"}, k: "a" },
-            { id: 12, q: "Kecap di handap ieu dibacana...", img: "ᮘᮙ᮪ᮘᮥᮀ", o: {a:"Bambang", b:"Bambung", c:"Bambing", d:"Bambong"}, k: "b" },
-            { id: 13, q: "Kecap di handap ieu dibacana...", img: "ᮕᮢᮙᮥᮊ", o: {a:"Pramika", b:"Pranuka", c:"Pramuka", d:"Pramaka"}, k: "c" },
-            { id: 14, q: "Kecap di handap ieu dibacana...", img: "ᮊᮜᮀᮊᮀ", o: {a:"Kalangkang", b:"Kulungkung", c:"Kilingking", d:"Kalengken"}, k: "a" },
-            { id: 15, q: "Kecap di handap ieu dibacana...", img: "ᮎᮤᮘᮩᮛᮩᮙ᮪", o: {a:"Cibeureum", b:"Cibeurum", c:"Ciberep", d:"Ciburum"}, k: "a" },
-            { id: 16, q: "Kalimah di handap ieu dibacana...", img: "ᮃᮘᮂ ᮊ ᮞᮝᮂ", o: {a:"Abah ka sawah", b:"Ibi ka sawah", c:"Abah ka imah", d:"Abah ka pasar"}, k: "a" },
-            { id: 17, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮥᮊ ᮕᮥᮃᮞ", o: {a:"Buka puasa", b:"Buka panto", c:"Buku puasa", d:"Buka puasaa"}, k: "a" },
-            { id: 18, q: "Cara nulis 'Abah ka sawah' anu bener nyaéta...", img: "", o: {a:"ᮃᮘᮂ ᮊ ᮞᮝᮂ", b:"ᮃᮘᮂ ᮊ ᮞ᮪ᮝᮂ", c:"ᮃᮘᮂ ᮊᮥ ᮞᮝᮂ", d:"ᮃᮘᮂ ᮊ ᮞᮝ"}, k: "a" },
-            { id: 19, q: "Cara nulis 'Karédok' anu bener nyaéta...", img: "", o: {a:"ᮊᮛᮦᮓᮧᮊ᮪", b:"ᮊᮛᮨᮓᮧᮊ᮪", c:"ᮊᮛᮦᮓᮧᮊ", d:"ᮊᮛᮩᮓᮧᮊ᮪"}, k: "a" },
-            { id: 20, q: "Cara nulis 'Pramuka' anu bener nyaéta...", img: "", o: {a:"ᮕᮢᮙᮥᮊ", b:"ᮕᮙᮥᮊ", c:"ᮕᮢᮙᮥᮊ᮪", d:"ᮕᮢᮙᮤᮊ"}, k: "a" },
-            { id: 21, q: "Ieu lambang angka Sunda sabaraha?", img: "᮲᮰᮲᮵", o: {a:"2025", b:"2024", c:"1015", d:"3025"}, k: "a" },
-            { id: 22, q: "Ieu lambang angka Sunda sabaraha?", img: "᮱᮲", o: {a:"10", b:"11", c:"12", d:"21"}, k: "c" },
-            { id: 23, q: "Kecap di handap ieu dibacana...", img: "ᮞᮥᮊᮕᮥᮛ", o: {a:"Singapura", b:"Sukapura", c:"Sukapuraa", d:"Sukapuri"}, k: "b" },
-            { id: 24, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮥᮓᮊ᮪ ᮕᮤᮔ᮪ᮒᮨᮁ", o: {a:"Budak pinter", b:"Budak bageur", c:"Budak sakola", d:"Budak rajin"}, k: "a" },
-            { id: 25, q: "Ieu rarangken fungsina maéhan vokal, disebutna...", img: "᮪", o: {a:"Panyuku", b:"Panyecek", c:"Pamaéh", d:"Pangwisad"}, k: "c" }
+            { id: 1, q: "Kalimah di handap ieu dibacana...", img: "ᮃᮘᮂ ᮊ ᮞᮝᮂ", o: {a:"Abah ka sawah", b:"Abah ka imah", c:"Abah ka pasar", d:"Abah ka kebon"}, k: "a" },
+            { id: 2, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮕ ᮊ ᮊᮔ᮪ᮒᮧᮁ", o: {a:"Bapa ka pasar", b:"Bapa ka kantor", c:"Bapa ka sakola", d:"Bapa ka sawah"}, k: "b" },
+            { id: 3, q: "Kalimah di handap ieu dibacana...", img: "ᮄᮘᮥ ᮊ ᮕᮞᮁ", o: {a:"Ibu ka dapur", b:"Ibu ka pasar", c:"Ibu nuju tuang", d:"Ibu angkat"}, k: "b" },
+            { id: 4, q: "Kecap di handap ieu dibacana...", img: "ᮓᮠᮔ᮪ ᮊᮚᮥ", o: {a:"Dahan kayu", b:"Dahar kaju", c:"Dahar hayu", d:"Dahan hayu"}, k: "a" },
+            { id: 5, q: "Kecap di handap ieu dibacana...", img: "ᮘᮥᮓᮊ᮪ ᮕᮤᮔ᮪ᮒᮨᮁ", o: {a:"Budak pinter", b:"Budak bageur", c:"Budak sakola", d:"Budak rajin"}, k: "a" },
+            { id: 6, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
+            { id: 7, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮌ", o: {a:"KA", b:"GA", c:"NGA", d:"JA"}, k: "b" },
+            { id: 8, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮑ", o: {a:"CA", b:"JA", c:"NYA", d:"TA"}, k: "c" },
+            { id: 9, q: "Aksara Swara (Vokal) di handap dibacana...", img: "ᮃ", o: {a:"A", b:"I", c:"U", d:"E"}, k: "a" },
+            { id: 10, q: "Aksara Swara (Vokal) di handap dibacana...", img: "ᮄ", o: {a:"A", b:"I", c:"U", d:"E"}, k: "b" },
+            { id: 11, q: "Rarangken di luhur (i) disebutna...", img: "ᮤ", o: {a:"Panghulu", b:"Panyuku", c:"Pamepet", d:"Pamaeh"}, k: "a" },
+            { id: 12, q: "Rarangken di handap (u) disebutna...", img: "ᮥ", o: {a:"Panyuku", b:"Panyakra", c:"Pamingkal", d:"Panyecek"}, k: "a" },
+            { id: 13, q: "Kecap di handap ieu dibacana...", img: "ᮊᮥᮓ ᮜᮥᮙ᮪ᮕᮒ᮪", o: {a:"Kuda lumpat", b:"Kuda lulumpatan", c:"Kuda hiber", d:"Kuda kulem"}, k: "a" },
+            { id: 14, q: "Kecap di handap ieu dibacana...", img: "ᮘᮓᮊ᮪ ᮏᮝ", o: {a:"Badak jawa", b:"Gajah jawa", c:"Badak banten", d:"Badak sumatra"}, k: "a" },
+            { id: 15, q: "Kalimah di handap ieu dibacana...", img: "ᮙᮀᮌ ᮎᮧᮘᮤ", o: {a:"Mangga calik", b:"Mangga tuang", c:"Mangga cobi", d:"Mangga angkat"}, k: "c" },
+            { id: 16, q: "Kecap di handap ieu dibacana...", img: "ᮞᮙ᮪ᮕᮥᮛᮞᮥᮔ᮪", o: {a:"Sampurasun", b:"Sampurasaan", c:"Sampura", d:"Sampurasen"}, k: "a" },
+            { id: 17, q: "Jawaban tina Sampurasun nyaeta...", img: "ᮛᮙ᮪ᮕᮨᮞ᮪", o: {a:"Rampes", b:"Rumpas", c:"Rompes", d:"Rampis"}, k: "a" },
+            { id: 18, q: "Kecap di handap ieu dibacana...", img: "ᮠᮒᮥᮁ ᮔᮥᮠᮥᮔ᮪", o: {a:"Hatur nuhun", b:"Hatur lumayan", c:"Hatur bapa", d:"Nuhun pisan"}, k: "a" },
+            { id: 19, q: "Kecap di handap ieu dibacana...", img: "ᮕᮨᮔ᮪ᮒᮨᮔ᮪ ᮞᮥᮔ᮪ᮓ", o: {a:"Peunteun Sunda", b:"Pinter Sunda", c:"Pantun Sunda", d:"Pancen Sunda"}, k: "a" },
+            { id: 20, q: "Kecap di handap ieu dibacana...", img: "ᮞᮊᮧᮜ ᮓᮞᮁ", o: {a:"Sakola Luhur", b:"Sakola Dasar", c:"Saka Dasar", d:"Sakola Imah"}, k: "b" },
+            { id: 21, q: "Rarangken Panyecek (ng) lambangna...", img: "ᮀ", o: {a:"Panyecek (ng)", b:"Panglayar (r)", c:"Pangwisad (h)", d:"Pamaeh"}, k: "a" },
+            { id: 22, q: "Rarangken Panglayar (r) lambangna...", img: "ᮁ", o: {a:"Panyecek", b:"Panglayar", c:"Pangwisad", d:"Pamaeh"}, k: "b" },
+            { id: 23, q: "Rarangken Pangwisad (h) lambangna...", img: "ᮂ", o: {a:"Panyecek", b:"Pangwisad", c:"Panglayar", d:"Pamaeh"}, k: "b" },
+            { id: 24, q: "Rarangken Pamaeh (maehan vokal) lambangna...", img: "᮪", o: {a:"Panyuku", b:"Panghulu", c:"Pamaeh", d:"Pamepet"}, k: "c" },
+            { id: 25, q: "Aksara Ngalagena 'SA' lambangna...", img: "ᮞ", o: {a:"SA", b:"HA", c:"KA", d:"LA"}, k: "a" }
         ];
 
         window.onload = async () => {
             try {
-                const res = await fetch(SCRIPT_URL);
+                const res = await fetch(SCRIPT_URL + "?sheet=DataSiswa");
                 dbSiswa = await res.json();
                 const list = document.getElementById('daftar-nami');
-                dbSiswa.forEach(m => { let o = document.createElement('option'); o.value = m.nama; list.appendChild(o); });
-                document.getElementById('nami-input').addEventListener('input', function() {
-                    const f = dbSiswa.find(s => s.nama === this.value);
-                    if(f) { document.getElementById('nisn-input').value = f.nis; document.getElementById('kelas-input').value = f.kelas; document.getElementById('btn-login').disabled = false; }
+                dbSiswa.forEach(m => { 
+                    let o = document.createElement('option'); 
+                    o.value = m.Nami || m.nami || m.nama || m.Nama; 
+                    list.appendChild(o); 
                 });
-                document.getElementById('btn-login').innerText = "MULAI UJIAN";
-            } catch (e) { alert("Server Error!"); }
+                document.getElementById('nami-input').addEventListener('input', function() {
+                    const f = dbSiswa.find(s => (s.Nami || s.nami || s.nama || s.Nama) === this.value);
+                    if(f) { 
+                        document.getElementById('nisn-input').value = f.NIS || f.nis || f.Nis || f.NISN; 
+                        document.getElementById('kelas-input').value = f.Kelas || f.kelas; 
+                        document.getElementById('btn-login').disabled = false;
+                        document.getElementById('btn-login').innerText = "MULAI UJIAN";
+                        muridLogin = f;
+                    }
+                });
+                document.getElementById('btn-login').innerText = "PILIH NAMI...";
+            } catch (e) { document.getElementById('btn-login').innerText = "KONEKSI ERROR!"; }
         };
 
         function startExam() {
-            const nis = document.getElementById('nisn-input').value;
-            muridLogin = dbSiswa.find(s => s.nis == nis);
-            if (muridLogin) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('exam-interface').style.display = 'flex';
-                document.getElementById('user-display').innerText = muridLogin.nama;
-                initNav(); render(); startTimer();
-            }
+            const docEl = window.document.documentElement;
+            if (docEl.requestFullscreen) docEl.requestFullscreen();
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('exam-interface').style.display = 'flex';
+            document.getElementById('user-display').innerText = muridLogin.Nami || muridLogin.nami;
+            kirimStatus("AKTIF");
+            initNav(); render(); startTimer();
         }
 
         function initNav() {
             const grid = document.getElementById('nav-grid'); grid.innerHTML = "";
             masterSoal.forEach((_, i) => {
                 const b = document.createElement('div'); b.className = 'q-box'; b.id = `nav-${i}`; b.innerText = i + 1;
-                b.onclick = () => { currentIdx = i; render(); window.scrollTo(0,0); };
+                b.onclick = () => { currentIdx = i; render(); };
                 grid.appendChild(b);
             });
         }
@@ -162,7 +174,7 @@
             const s = masterSoal[currentIdx];
             document.getElementById('q-text').innerText = (currentIdx + 1) + ". " + s.q;
             const box = document.getElementById('aksara-box');
-            box.innerText = s.img; box.style.display = s.img === "" ? "none" : "flex";
+            box.innerText = s.img;
             document.getElementById('label-a').innerText = s.o.a;
             document.getElementById('label-b').innerText = s.o.b;
             document.getElementById('label-c').innerText = s.o.c;
@@ -183,7 +195,7 @@
             });
         }
 
-        function move(d) { currentIdx += d; if(currentIdx < 0) currentIdx=0; if(currentIdx >= masterSoal.length) currentIdx=masterSoal.length-1; render(); window.scrollTo(0,0); }
+        function move(d) { currentIdx += d; if(currentIdx < 0) currentIdx=0; if(currentIdx >= masterSoal.length) currentIdx=masterSoal.length-1; render(); }
 
         function startTimer() {
             const t = setInterval(() => {
@@ -193,16 +205,49 @@
             }, 1000);
         }
 
-        function confirmFinish() { if(confirm("Yakin réngsé?")) finish(); }
+        function confirmFinish() { if(confirm("Yakin réngsé? Sadaya jawaban parantos leres?")) finish(); }
+
+        function kirimStatus(st, nl = 0) {
+            fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify({ 
+                    nama: muridLogin.Nami || muridLogin.nami || muridLogin.Nama, 
+                    nis: muridLogin.NIS || muridLogin.nis || muridLogin.Nis, 
+                    peunteun: nl,
+                    status: st,
+                    cheat: countCheat 
+                }) 
+            });
+        }
 
         async function finish() {
             let correct = 0; masterSoal.forEach((s, i) => { if(answers[i] === s.k) correct++; });
-            const score = (correct / masterSoal.length) * 100;
-            document.querySelector('.main-content').innerHTML = "<h2>Ngirim data...</h2>";
-            try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, kelas: muridLogin.kelas, peunteun: score.toFixed(0) }) }); } catch (e) {}
-            document.querySelector('.main-content').innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:20px;"><h1>SKOR: ${score.toFixed(0)}</h1><p>Hatur nuhun parantos ujian.</p></div>`;
-            document.querySelector('.q-footer').style.display = 'none';
+            const score = Math.round((correct / masterSoal.length) * 100);
+            document.querySelector('.main-content').innerHTML = "<h2 style='text-align:center;'>Ngirim data...</h2>";
+            kirimStatus("SELESAI", score);
+            setTimeout(() => {
+                document.querySelector('.main-content').innerHTML = `
+                    <div style="text-align:center; padding:40px; background:white; border-radius:20px; border: 2px solid var(--success);">
+                        <h2 style="color:var(--success);">ALHAMDULILLAH RENGSE!</h2>
+                        <p>Nilai Anjeun:</p>
+                        <h1 style="font-size:70px; color:var(--primary); margin: 10px 0;">${score}</h1>
+                        <p>Pelanggaran: <b style="color:var(--danger);">${countCheat}</b></p>
+                        <button class="btn-start" onclick="location.reload()" style="background:var(--primary);">LOGOUT</button>
+                    </div>`;
+                document.querySelector('.q-footer').style.display = 'none';
+            }, 1000);
+            window.onblur = null;
         }
+
+        window.onblur = function() {
+            if (muridLogin) {
+                countCheat++;
+                document.getElementById('cheat-overlay').style.display = 'flex';
+                kirimStatus("NYONTEK");
+            }
+        };
+        function balikUjian() { document.getElementById('cheat-overlay').style.display = 'none'; }
     </script>
 </body>
 </html>
