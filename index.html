@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RULES CBT - FINAL VERSION</title>
+    <title>RULES CBT - FIX AKSARA</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
@@ -13,112 +13,87 @@
         /* --- LOGIN SCREEN --- */
         #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 20px; }
         .login-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .login-card h2 { color: var(--primary); margin-bottom: 20px; letter-spacing: 2px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; transition: 0.3s; }
-        input:focus { border-color: var(--blue); outline: none; }
-        .btn-start { background: var(--success); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-start:disabled { background: #ccc; cursor: not-allowed; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; }
+        .btn-start { background: var(--success); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-start:disabled { background: #ccc; }
 
-        /* --- EXAM INTERFACE --- */
+        /* --- INTERFACE --- */
         #exam-interface { display: none; flex-direction: column; min-height: 100vh; }
         header { background: white; padding: 15px 20px; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 
         .main-content { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 120px; }
 
-        /* --- QUESTION CARD --- */
+        /* --- SOAL & AKSARA --- */
         .question-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        #q-text { font-weight: 700; margin-bottom: 20px; line-height: 1.5; color: var(--primary); font-size: 1.1rem; }
+        #q-text { font-weight: 700; margin-bottom: 20px; color: var(--primary); font-size: 1.1rem; }
         .aksara-display { 
             font-family: 'Noto Sans Sundanese', sans-serif;
-            font-size: 3.5rem; text-align: center; margin: 15px 0; padding: 25px; 
+            font-size: 3.2rem; text-align: center; margin: 15px 0; padding: 25px; 
             background: #fcfcfc; border-radius: 15px; border: 2px dashed #ddd; 
             min-height: 120px; display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- OPTIONS TABLE SYSTEM --- */
-        .options-container { width: 100%; margin-top: 15px; }
-        .option-btn { display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; }
+        /* --- OPTIONS TABLE --- */
+        .option-btn { display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 12px; cursor: pointer; overflow: hidden; }
         .radio-cell { display: table-cell; vertical-align: middle; width: 55px; text-align: center; background: #f9f9f9; border-right: 1px solid #eee; }
-        .radio-cell input { transform: scale(1.6); margin: 0; }
-        .text-cell { display: table-cell; vertical-align: middle; padding: 18px 20px; font-size: 17px; font-weight: 600; color: #333; text-align: left; }
-
+        .radio-cell input { transform: scale(1.6); }
+        .text-cell { display: table-cell; vertical-align: middle; padding: 18px 20px; font-size: 17px; font-weight: 600; color: #333; }
         .option-btn.active { border-color: var(--blue); background: #f0f7ff; }
-        .option-btn.active .radio-cell { background: #e1effe; border-right-color: var(--blue); }
 
-        /* --- NAVIGATION --- */
-        .nav-section { background: white; border-radius: 20px; padding: 20px; margin-top: 20px; }
+        /* --- NAVIGASI --- */
         .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
         .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 10px; font-weight: bold; background: #fff; cursor: pointer; }
-        .q-box.current { border: 2px solid var(--blue); color: var(--blue); background: #f0f7ff; }
+        .q-box.current { border: 2px solid var(--blue); color: var(--blue); }
         .q-box.filled { background: var(--success); color: white; border-color: var(--success); }
 
-        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; box-shadow: 0 -5px 10px rgba(0,0,0,0.05); }
-        .btn-nav { flex: 1; padding: 18px; border-radius: 15px; border: none; font-weight: bold; color: white; font-size: 16px; }
+        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .btn-nav { flex: 1; padding: 18px; border-radius: 15px; border: none; font-weight: bold; color: white; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
     <div id="login-screen">
         <div class="login-card">
-            <h2>RULES CBT</h2>
-            <p style="color:#666; font-size: 14px;">Mangga pilih nami kanggo ngamimitian</p>
-            <input type="text" id="nami-input" list="daftar-nami" placeholder="Tulis/Pilih Nami Sampeyan..." autocomplete="off">
+            <h2 style="letter-spacing:2px;">RULES CBT</h2>
+            <input type="text" id="nami-input" list="daftar-nami" placeholder="Pilih Nami...">
             <datalist id="daftar-nami"></datalist>
-            
-            <input type="text" id="nisn-input" placeholder="NIS Otomatis" readonly style="background:#f9f9f9; color:#888;">
-            <input type="text" id="kelas-input" placeholder="Kelas Otomatis" readonly style="background:#f9f9f9; color:#888;">
-            
-            <button id="btn-login" class="btn-start" onclick="startExam()" disabled>NGANTOS DATA...</button>
+            <input type="text" id="nisn-input" placeholder="NIS Otomatis" readonly>
+            <input type="text" id="kelas-input" placeholder="Kelas Otomatis" readonly>
+            <button id="btn-login" class="btn-start" onclick="startExam()" disabled>LOADING DATA...</button>
         </div>
     </div>
 
     <div id="exam-interface">
         <header>
-            <div id="user-display" style="font-weight:bold; color:var(--primary);"></div>
-            <div id="timer" style="color:var(--danger); font-weight:bold; font-size: 1.1rem;">30:00</div>
+            <div id="user-display" style="font-weight:bold;"></div>
+            <div id="timer" style="color:var(--danger); font-weight:bold;">30:00</div>
         </header>
 
         <div class="main-content">
             <div class="question-card">
                 <div id="q-text"></div>
                 <div id="aksara-box" class="aksara-display"></div>
-                
                 <div class="options-container">
-                    <label class="option-btn" id="box-a">
-                        <div class="radio-cell"><input type="radio" name="opt" value="a"></div>
-                        <div class="text-cell" id="label-a"></div>
-                    </label>
-                    <label class="option-btn" id="box-b">
-                        <div class="radio-cell"><input type="radio" name="opt" value="b"></div>
-                        <div class="text-cell" id="label-b"></div>
-                    </label>
-                    <label class="option-btn" id="box-c">
-                        <div class="radio-cell"><input type="radio" name="opt" value="c"></div>
-                        <div class="text-cell" id="label-c"></div>
-                    </label>
-                    <label class="option-btn" id="box-d">
-                        <div class="radio-cell"><input type="radio" name="opt" value="d"></div>
-                        <div class="text-cell" id="label-d"></div>
-                    </label>
+                    <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="a"></div><div class="text-cell" id="label-a"></div></label>
+                    <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="b"></div><div class="text-cell" id="label-b"></div></label>
+                    <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="c"></div><div class="text-cell" id="label-c"></div></label>
+                    <label class="option-btn"><div class="radio-cell"><input type="radio" name="opt" value="d"></div><div class="text-cell" id="label-d"></div></label>
                 </div>
             </div>
-
-            <div class="nav-section">
-                <div style="font-size: 12px; font-weight: bold; color: #999; margin-bottom: 10px;">NAVIGASI SOAL:</div>
+            <div style="background:white; border-radius:20px; padding:20px; margin-top:20px;">
                 <div class="grid-nav" id="nav-grid"></div>
-                <button class="btn-start" onclick="confirmFinish()" style="margin-top:30px; background:var(--primary);">RENGSE / KIRIM</button>
+                <button class="btn-start" onclick="confirmFinish()" style="margin-top:25px; width:100%; background:var(--primary);">KIRIM JAWABAN</button>
             </div>
         </div>
 
         <div class="q-footer">
-            <button class="btn-nav" style="background:#bdc3c7;" onclick="move(-1)">← KIRI</button>
-            <button class="btn-nav" style="background:var(--blue);" onclick="move(1)">KATUHU →</button>
+            <button class="btn-nav" style="background:#bdc3c7;" onclick="move(-1)">KIRI</button>
+            <button class="btn-nav" style="background:var(--blue);" onclick="move(1)">KATUHU</button>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxNbwE1FPuZcoPzdYh_ZSGuv5L-JiIZpRLjFziKJiB7jz_fg5cRQalnB2KAEd3J7g/exec";
-        
         let dbSiswa = [], currentIdx = 0, answers = {}, timeRemaining = 30 * 60, muridLogin = null;
 
         const masterSoal = [
@@ -137,9 +112,9 @@
             { id: 13, q: "Kecap di handap ieu dibacana...", img: "ᮕᮢᮙᮥᮊ", o: {a:"Pramika", b:"Pranuka", c:"Pramuka", d:"Pramaka"}, k: "c" },
             { id: 14, q: "Kecap di handap ieu dibacana...", img: "ᮊᮜᮀᮊᮀ", o: {a:"Kalangkang", b:"Kulungkung", c:"Kilingking", d:"Kalengken"}, k: "a" },
             { id: 15, q: "Kecap di handap ieu dibacana...", img: "ᮎᮤᮘᮩᮛᮩᮙ᮪", o: {a:"Cibeureum", b:"Cibeurum", c:"Ciberep", d:"Ciburum"}, k: "a" },
-            { id: 16, q: "Kalimah di handap ieu dibacana...", img: "ᮀᮘᮂ ᮊ ᮞᮝᮂ", o: {a:"Abah ka sawah", b:"Ibi ka sawah", c:"Abah ka imah", d:"Abah ka pasar"}, k: "a" },
+            { id: 16, q: "Kalimah di handap ieu dibacana...", img: "ᮃᮘᮂ ᮊ ᮞᮝᮂ", o: {a:"Abah ka sawah", b:"Ibi ka sawah", c:"Abah ka imah", d:"Abah ka pasar"}, k: "a" },
             { id: 17, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮥᮊ ᮕᮥᮃᮞ", o: {a:"Buka puasa", b:"Buka panto", c:"Buku puasa", d:"Buka puasaa"}, k: "a" },
-            { id: 18, q: "Cara nulis 'Abah ka sawah' anu bener nyaéta...", img: "", o: {a:"ᮀᮘᮂ ᮊ ᮞᮝᮂ", b:"ᮀᮘᮂ ᮊ ᮞ᮪ᮝᮂ", c:"ᮀᮘᮂ ᮊᮥ ᮞᮝᮂ", d:"ᮀᮘᮂ ᮊ ᮞᮝ"}, k: "a" },
+            { id: 18, q: "Cara nulis 'Abah ka sawah' anu bener nyaéta...", img: "", o: {a:"ᮃᮘᮂ ᮊ ᮞᮝᮂ", b:"ᮃᮘᮂ ᮊ ᮞ᮪ᮝᮂ", c:"ᮃᮘᮂ ᮊᮥ ᮞᮝᮂ", d:"ᮃᮘᮂ ᮊ ᮞᮝ"}, k: "a" },
             { id: 19, q: "Cara nulis 'Karédok' anu bener nyaéta...", img: "", o: {a:"ᮊᮛᮦᮓᮧᮊ᮪", b:"ᮊᮛᮨᮓᮧᮊ᮪", c:"ᮊᮛᮦᮓᮧᮊ", d:"ᮊᮛᮩᮓᮧᮊ᮪"}, k: "a" },
             { id: 20, q: "Cara nulis 'Pramuka' anu bener nyaéta...", img: "", o: {a:"ᮕᮢᮙᮥᮊ", b:"ᮕᮙᮥᮊ", c:"ᮕᮢᮙᮥᮊ᮪", d:"ᮕᮢᮙᮤᮊ"}, k: "a" },
             { id: 21, q: "Ieu lambang angka Sunda sabaraha?", img: "᮲᮰᮲᮵", o: {a:"2025", b:"2024", c:"1015", d:"3025"}, k: "a" },
@@ -155,19 +130,12 @@
                 dbSiswa = await res.json();
                 const list = document.getElementById('daftar-nami');
                 dbSiswa.forEach(m => { let o = document.createElement('option'); o.value = m.nama; list.appendChild(o); });
-                
                 document.getElementById('nami-input').addEventListener('input', function() {
                     const f = dbSiswa.find(s => s.nama === this.value);
-                    if(f) { 
-                        document.getElementById('nisn-input').value = f.nis; 
-                        document.getElementById('kelas-input').value = f.kelas; 
-                        document.getElementById('btn-login').disabled = false;
-                    } else {
-                        document.getElementById('btn-login').disabled = true;
-                    }
+                    if(f) { document.getElementById('nisn-input').value = f.nis; document.getElementById('kelas-input').value = f.kelas; document.getElementById('btn-login').disabled = false; }
                 });
                 document.getElementById('btn-login').innerText = "MULAI UJIAN";
-            } catch (e) { alert("Server Error! Cobi refresh."); }
+            } catch (e) { alert("Server Error!"); }
         };
 
         function startExam() {
@@ -176,7 +144,7 @@
             if (muridLogin) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('exam-interface').style.display = 'flex';
-                document.getElementById('user-display').innerText = muridLogin.nama + " (" + muridLogin.kelas + ")";
+                document.getElementById('user-display').innerText = muridLogin.nama;
                 initNav(); render(); startTimer();
             }
         }
@@ -195,18 +163,14 @@
             document.getElementById('q-text').innerText = (currentIdx + 1) + ". " + s.q;
             const box = document.getElementById('aksara-box');
             box.innerText = s.img; box.style.display = s.img === "" ? "none" : "flex";
-            
             document.getElementById('label-a').innerText = s.o.a;
             document.getElementById('label-b').innerText = s.o.b;
             document.getElementById('label-c').innerText = s.o.c;
             document.getElementById('label-d').innerText = s.o.d;
-            
             const rads = document.getElementsByName('opt');
             rads.forEach(r => {
                 r.checked = (answers[currentIdx] === r.value);
-                const parent = r.closest('.option-btn');
-                if(r.checked) parent.classList.add('active');
-                else parent.classList.remove('active');
+                r.closest('.option-btn').classList.toggle('active', r.checked);
                 r.onclick = () => { answers[currentIdx] = r.value; updateNav(); render(); };
             });
             updateNav();
@@ -215,11 +179,7 @@
         function updateNav() {
             masterSoal.forEach((_, i) => {
                 const b = document.getElementById(`nav-${i}`);
-                if (b) {
-                    b.className = 'q-box';
-                    if (i === currentIdx) b.classList.add('current');
-                    if (answers[i]) b.classList.add('filled');
-                }
+                if(b) { b.className = 'q-box'; if(i===currentIdx) b.classList.add('current'); if(answers[i]) b.classList.add('filled'); }
             });
         }
 
@@ -229,29 +189,18 @@
             const t = setInterval(() => {
                 let m = Math.floor(timeRemaining / 60), s = timeRemaining % 60;
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if (timeRemaining <= 0) { clearInterval(t); finish(); }
-                timeRemaining--;
+                if (timeRemaining-- <= 0) { clearInterval(t); finish(); }
             }, 1000);
         }
 
-        function confirmFinish() { if(confirm("Yakin parantos réngsé sadayana?")) finish(); }
+        function confirmFinish() { if(confirm("Yakin réngsé?")) finish(); }
 
         async function finish() {
-            let correct = 0;
-            masterSoal.forEach((s, i) => { if(answers[i] === s.k) correct++; });
+            let correct = 0; masterSoal.forEach((s, i) => { if(answers[i] === s.k) correct++; });
             const score = (correct / masterSoal.length) * 100;
-            document.querySelector('.main-content').innerHTML = "<div style='text-align:center; padding:50px;'><h2>Ngirim jawaban... Mangga antos.</h2></div>";
-            try {
-                await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, kelas: muridLogin.kelas, peunteun: score.toFixed(0) }) });
-            } catch (e) {}
-            document.querySelector('.main-content').innerHTML = `
-                <div style="text-align:center; padding:50px; background:white; border-radius:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <h1 style="color:var(--primary);">HATUR NUHUN!</h1>
-                    <div style="font-size:70px; color:var(--success); font-weight:bold; margin:20px 0;">${score.toFixed(0)}</div>
-                    <p style="color:#666;">Data parantos kasimpen dina server.</p>
-                    <button class="btn-start" onclick="location.reload()">LOGOUT</button>
-                </div>
-            `;
+            document.querySelector('.main-content').innerHTML = "<h2>Ngirim data...</h2>";
+            try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, kelas: muridLogin.kelas, peunteun: score.toFixed(0) }) }); } catch (e) {}
+            document.querySelector('.main-content').innerHTML = `<div style="text-align:center; padding:50px; background:white; border-radius:20px;"><h1>SKOR: ${score.toFixed(0)}</h1><p>Hatur nuhun parantos ujian.</p></div>`;
             document.querySelector('.q-footer').style.display = 'none';
         }
     </script>
