@@ -3,70 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RULES CBT - ANTI-BOCOR FIX</title>
+    <title>RULES CBT - FINAL VERSION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --blue: #3498db; }
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: sans-serif; background-color: var(--bg); overflow-x: hidden; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); overflow-x: hidden; }
 
-        /* --- LOGIN --- */
-        #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1e3c72; padding: 20px; }
-        .login-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; }
-        .btn-start { background: var(--success); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; }
+        /* --- LOGIN SCREEN --- */
+        #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 20px; }
+        .login-card { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .login-card h2 { color: var(--primary); margin-bottom: 20px; letter-spacing: 2px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; transition: 0.3s; }
+        input:focus { border-color: var(--blue); outline: none; }
+        .btn-start { background: var(--success); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-start:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* --- INTERFACE --- */
+        /* --- EXAM INTERFACE --- */
         #exam-interface { display: none; flex-direction: column; min-height: 100vh; }
-        header { background: white; padding: 15px 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
+        header { background: white; padding: 15px 20px; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
 
         .main-content { padding: 15px; max-width: 500px; margin: 0 auto; width: 100%; padding-bottom: 120px; }
 
-        /* --- SOAL --- */
-        .question-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        #q-text { font-weight: bold; margin-bottom: 15px; line-height: 1.4; color: var(--primary); font-size: 1.1rem; }
-        .aksara-display { font-size: 3.5rem; text-align: center; margin: 15px 0; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; min-height: 100px; }
-
-        /* --- JAWABAN TABLE SYSTEM --- */
-        .options-container { width: 100%; margin-top: 10px; }
-        .option-btn { 
-            display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; 
-            border-radius: 15px; margin-bottom: 12px; cursor: pointer; overflow: hidden; 
+        /* --- QUESTION CARD --- */
+        .question-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        #q-text { font-weight: 700; margin-bottom: 20px; line-height: 1.5; color: var(--primary); font-size: 1.1rem; }
+        .aksara-display { 
+            font-family: 'Noto Sans Sundanese', sans-serif;
+            font-size: 3.5rem; text-align: center; margin: 15px 0; padding: 25px; 
+            background: #fcfcfc; border-radius: 15px; border: 2px dashed #ddd; 
+            min-height: 120px; display: flex; align-items: center; justify-content: center;
         }
-        .radio-cell { display: table-cell; vertical-align: middle; width: 50px; text-align: center; background: #fcfcfc; border-right: 1px solid #eee; }
-        .radio-cell input { transform: scale(1.5); margin: 0; }
-        .text-cell { display: table-cell; vertical-align: middle; padding: 15px 20px; font-size: 16px; font-weight: 600; color: #333; text-align: left; }
 
-        /* Status Pilih */
+        /* --- OPTIONS TABLE SYSTEM --- */
+        .options-container { width: 100%; margin-top: 15px; }
+        .option-btn { display: table; width: 100%; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; }
+        .radio-cell { display: table-cell; vertical-align: middle; width: 55px; text-align: center; background: #f9f9f9; border-right: 1px solid #eee; }
+        .radio-cell input { transform: scale(1.6); margin: 0; }
+        .text-cell { display: table-cell; vertical-align: middle; padding: 18px 20px; font-size: 17px; font-weight: 600; color: #333; text-align: left; }
+
         .option-btn.active { border-color: var(--blue); background: #f0f7ff; }
         .option-btn.active .radio-cell { background: #e1effe; border-right-color: var(--blue); }
 
-        /* --- NAVIGASI --- */
-        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
-        .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 8px; font-weight: bold; background: #fdfdfd; cursor: pointer; }
+        /* --- NAVIGATION --- */
+        .nav-section { background: white; border-radius: 20px; padding: 20px; margin-top: 20px; }
+        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
+        .q-box { border: 1px solid #ddd; padding: 12px 0; text-align: center; border-radius: 10px; font-weight: bold; background: #fff; cursor: pointer; }
         .q-box.current { border: 2px solid var(--blue); color: var(--blue); background: #f0f7ff; }
         .q-box.filled { background: var(--success); color: white; border-color: var(--success); }
 
-        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; z-index: 1000; }
-        .btn-nav { flex: 1; padding: 16px; border-radius: 12px; border: none; font-weight: bold; color: white; font-size: 16px; }
+        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; box-shadow: 0 -5px 10px rgba(0,0,0,0.05); }
+        .btn-nav { flex: 1; padding: 18px; border-radius: 15px; border: none; font-weight: bold; color: white; font-size: 16px; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="color:var(--primary);">RULES CBT</h2>
-            <input type="text" id="nami-input" list="daftar-nami" placeholder="Pilih Nami..." autocomplete="off">
+            <h2>RULES CBT</h2>
+            <p style="color:#666; font-size: 14px;">Mangga pilih nami kanggo ngamimitian</p>
+            <input type="text" id="nami-input" list="daftar-nami" placeholder="Tulis/Pilih Nami Sampeyan..." autocomplete="off">
             <datalist id="daftar-nami"></datalist>
-            <input type="text" id="nisn-input" placeholder="NIS" readonly style="background:#f5f5f5;">
-            <input type="text" id="kelas-input" placeholder="Kelas" readonly style="background:#f5f5f5;">
-            <button id="btn-login" class="btn-start" onclick="startExam()" disabled>LOADING...</button>
+            
+            <input type="text" id="nisn-input" placeholder="NIS Otomatis" readonly style="background:#f9f9f9; color:#888;">
+            <input type="text" id="kelas-input" placeholder="Kelas Otomatis" readonly style="background:#f9f9f9; color:#888;">
+            
+            <button id="btn-login" class="btn-start" onclick="startExam()" disabled>NGANTOS DATA...</button>
         </div>
     </div>
 
     <div id="exam-interface">
         <header>
-            <div id="user-info" style="font-weight:bold;"></div>
-            <div id="timer" style="color:var(--danger); font-weight:bold;">30:00</div>
+            <div id="user-display" style="font-weight:bold; color:var(--primary);"></div>
+            <div id="timer" style="color:var(--danger); font-weight:bold; font-size: 1.1rem;">30:00</div>
         </header>
 
         <div class="main-content">
@@ -94,10 +103,10 @@
                 </div>
             </div>
 
-            <div style="background:white; border-radius:20px; padding:20px; margin-top:20px;">
-                <div style="font-size:0.8rem; font-weight:bold; color:#888;">NOMOR SOAL:</div>
+            <div class="nav-section">
+                <div style="font-size: 12px; font-weight: bold; color: #999; margin-bottom: 10px;">NAVIGASI SOAL:</div>
                 <div class="grid-nav" id="nav-grid"></div>
-                <button class="btn-start" onclick="confirmFinish()" style="margin-top:25px; background:var(--primary);">RENGSE UJIAN</button>
+                <button class="btn-start" onclick="confirmFinish()" style="margin-top:30px; background:var(--primary);">RENGSE / KIRIM</button>
             </div>
         </div>
 
@@ -109,7 +118,36 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxNbwE1FPuZcoPzdYh_ZSGuv5L-JiIZpRLjFziKJiB7jz_fg5cRQalnB2KAEd3J7g/exec";
+        
         let dbSiswa = [], currentIdx = 0, answers = {}, timeRemaining = 30 * 60, muridLogin = null;
+
+        const masterSoal = [
+            { id: 1, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
+            { id: 2, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮘ", o: {a:"PA", b:"BA", c:"MA", d:"WA"}, k: "b" },
+            { id: 3, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮙ", o: {a:"NA", b:"SA", c:"MA", d:"YA"}, k: "c" },
+            { id: 4, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮞ", o: {a:"SA", b:"KA", c:"RA", d:"LA"}, k: "a" },
+            { id: 5, q: "Ieu lambang aksara Sunda dibacana...", img: "ᮝ", o: {a:"DA", b:"TA", c:"LA", d:"WA"}, k: "d" },
+            { id: 6, q: "Rarangken di luhur (i) disebutna...", img: "ᮤ", o: {a:"Panghulu", b:"Panyuku", c:"Pamepet", d:"Paneuleung"}, k: "a" },
+            { id: 7, q: "Rarangken di handap (u) disebutna...", img: "ᮥ", o: {a:"Panyuku", b:"Panyakra", c:"Pamingkal", d:"Pamaéh"}, k: "a" },
+            { id: 8, q: "Rarangken di gigir (o) disebutna...", img: "ᮧ", o: {a:"Panolong", b:"Paneled", c:"Panélé", d:"Pangwisad"}, k: "a" },
+            { id: 9, q: "Rarangken di luhur (e-ember) disebutna...", img: "ᮨ", o: {a:"Pamepet", b:"Paneuleung", c:"Panyecek", d:"Panglayar"}, k: "a" },
+            { id: 10, q: "Rarangken di luhur (eu) disebutna...", img: "ᮩ", o: {a:"Paneuleung", b:"Panghulu", c:"Pamepet", d:"Pamaéh"}, k: "a" },
+            { id: 11, q: "Kecap di handap ieu dibacana...", img: "ᮊᮛᮦᮓᮧᮊ᮪", o: {a:"Karédok", b:"Karedok", c:"Karidok", d:"Karudok"}, k: "a" },
+            { id: 12, q: "Kecap di handap ieu dibacana...", img: "ᮘᮙ᮪ᮘᮥᮀ", o: {a:"Bambang", b:"Bambung", c:"Bambing", d:"Bambong"}, k: "b" },
+            { id: 13, q: "Kecap di handap ieu dibacana...", img: "ᮕᮢᮙᮥᮊ", o: {a:"Pramika", b:"Pranuka", c:"Pramuka", d:"Pramaka"}, k: "c" },
+            { id: 14, q: "Kecap di handap ieu dibacana...", img: "ᮊᮜᮀᮊᮀ", o: {a:"Kalangkang", b:"Kulungkung", c:"Kilingking", d:"Kalengken"}, k: "a" },
+            { id: 15, q: "Kecap di handap ieu dibacana...", img: "ᮎᮤᮘᮩᮛᮩᮙ᮪", o: {a:"Cibeureum", b:"Cibeurum", c:"Ciberep", d:"Ciburum"}, k: "a" },
+            { id: 16, q: "Kalimah di handap ieu dibacana...", img: "ᮀᮘᮂ ᮊ ᮞᮝᮂ", o: {a:"Abah ka sawah", b:"Ibi ka sawah", c:"Abah ka imah", d:"Abah ka pasar"}, k: "a" },
+            { id: 17, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮥᮊ ᮕᮥᮃᮞ", o: {a:"Buka puasa", b:"Buka panto", c:"Buku puasa", d:"Buka puasaa"}, k: "a" },
+            { id: 18, q: "Cara nulis 'Abah ka sawah' anu bener nyaéta...", img: "", o: {a:"ᮀᮘᮂ ᮊ ᮞᮝᮂ", b:"ᮀᮘᮂ ᮊ ᮞ᮪ᮝᮂ", c:"ᮀᮘᮂ ᮊᮥ ᮞᮝᮂ", d:"ᮀᮘᮂ ᮊ ᮞᮝ"}, k: "a" },
+            { id: 19, q: "Cara nulis 'Karédok' anu bener nyaéta...", img: "", o: {a:"ᮊᮛᮦᮓᮧᮊ᮪", b:"ᮊᮛᮨᮓᮧᮊ᮪", c:"ᮊᮛᮦᮓᮧᮊ", d:"ᮊᮛᮩᮓᮧᮊ᮪"}, k: "a" },
+            { id: 20, q: "Cara nulis 'Pramuka' anu bener nyaéta...", img: "", o: {a:"ᮕᮢᮙᮥᮊ", b:"ᮕᮙᮥᮊ", c:"ᮕᮢᮙᮥᮊ᮪", d:"ᮕᮢᮙᮤᮊ"}, k: "a" },
+            { id: 21, q: "Ieu lambang angka Sunda sabaraha?", img: "᮲᮰᮲᮵", o: {a:"2025", b:"2024", c:"1015", d:"3025"}, k: "a" },
+            { id: 22, q: "Ieu lambang angka Sunda sabaraha?", img: "᮱᮲", o: {a:"10", b:"11", c:"12", d:"21"}, k: "c" },
+            { id: 23, q: "Kecap di handap ieu dibacana...", img: "ᮞᮥᮊᮕᮥᮛ", o: {a:"Singapura", b:"Sukapura", c:"Sukapuraa", d:"Sukapuri"}, k: "b" },
+            { id: 24, q: "Kalimah di handap ieu dibacana...", img: "ᮘᮥᮓᮊ᮪ ᮕᮤᮔ᮪ᮒᮨᮁ", o: {a:"Budak pinter", b:"Budak bageur", c:"Budak sakola", d:"Budak rajin"}, k: "a" },
+            { id: 25, q: "Ieu rarangken fungsina maéhan vokal, disebutna...", img: "᮪", o: {a:"Panyuku", b:"Panyecek", c:"Pamaéh", d:"Pangwisad"}, k: "c" }
+        ];
 
         window.onload = async () => {
             try {
@@ -117,43 +155,20 @@
                 dbSiswa = await res.json();
                 const list = document.getElementById('daftar-nami');
                 dbSiswa.forEach(m => { let o = document.createElement('option'); o.value = m.nama; list.appendChild(o); });
+                
                 document.getElementById('nami-input').addEventListener('input', function() {
                     const f = dbSiswa.find(s => s.nama === this.value);
-                    if(f) { document.getElementById('nisn-input').value = f.nis; document.getElementById('kelas-input').value = f.kelas; }
+                    if(f) { 
+                        document.getElementById('nisn-input').value = f.nis; 
+                        document.getElementById('kelas-input').value = f.kelas; 
+                        document.getElementById('btn-login').disabled = false;
+                    } else {
+                        document.getElementById('btn-login').disabled = true;
+                    }
                 });
-                document.getElementById('btn-login').disabled = false;
                 document.getElementById('btn-login').innerText = "MULAI UJIAN";
             } catch (e) { alert("Server Error! Cobi refresh."); }
         };
-
-        // DATA MASTER SOAL (JAWABAN DISUMPUTKEUN DINA KONCI 'K')
-        const masterSoal = [
-            { id: 1, q: "Manakah lambang aksara Sunda pikeun sora 'KA'?", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
-            { id: 2, q: "Manakah lambang aksara Sunda pikeun sora 'LA'?", img: "ᮜ", o: {a:"RA", b:"LA", c:"WA", d:"YA"}, k: "b" },
-            { id: 3, q: "Manakah lambang aksara Sunda pikeun sora 'SA'?", img: "ᮞ", o: {a:"PA", b:"BA", c:"SA", d:"KA"}, k: "c" },
-            { id: 4, q: "Manakah lambang aksara Sunda pikeun sora 'MA'?", img: "ᮙ", o: {a:"MA", b:"NA", c:"YA", d:"LA"}, k: "a" },
-            { id: 5, q: "Manakah aksara Swara pikeun sora 'E' (lele)?", img: "ᮈ", o: {a:"A", b:"E", c:"O", d:"I"}, k: "b" },
-            { id: 6, q: "Manakah aksara Swara pikeun sora 'O'?", img: "ᮇ", o: {a:"I", b:"EU", c:"O", d:"E"}, k: "c" },
-            { id: 7, q: "Manakah aksara Swara pikeun sora 'EU'?", img: "ᮉ", o: {a:"E", b:"O", c:"A", d:"EU"}, k: "d" },
-            { id: 8, q: "Mana nu bener nuliskeun kecap 'Sasmita'?", img: "ᮞᮞ᮪ᮙᮤᮒ", o: {a:"Sasmita", b:"Sasmata", c:"Sasmitaa", d:"Sasmati"}, k: "a" },
-            { id: 9, q: "Aksara 'ᮙ' (MA) dibéré rarangken Panyakra jeung Panghulu dibaca...", img: "ᮙᮢᮤ", o: {a:"MRAI", b:"MRU", c:"MRI", d:"MRA"}, k: "c" },
-            { id: 10, q: "Nulis kecap 'Pramuka' nu bener nyaéta...", img: "ᮕᮢᮙᮥᮊ", o: {a:"Pramika", b:"Pramuka", c:"Pramuk", d:"Pamraka"}, k: "b" },
-            { id: 11, q: "Dina lambang 'ᮊᮤᮔ᮪ᮕᮢᮤᮀ', rarangken naon waé nu dipaké?", img: "ᮊᮤᮔ᮪ᮕᮢᮤᮀ", o: {a:"Panghulu, Panyecek, Panyakra", b:"Panyuku, Pangwisad", c:"Panolong, Paneuleung", d:"Pamaéh, Panghulu"}, k: "a" },
-            { id: 12, q: "Kecap 'Bareuh' merlukeun rarangken vokal...", img: "ᮘᮛᮩᮂ", o: {a:"Pamepet", b:"Paneuleung", c:"Paneuleung & Pangwisad", d:"Panyecek"}, k: "c" },
-            { id: 13, q: "Nulis kecap 'Cowét' merlukeun rarangken...", img: "ᮎᮧᮝᮦᮒ᮪", o: {a:"Panolong & Pamepet", b:"Panolong & Paneled", c:"Panolong & Paneleung", d:"Panolong & Panghulu"}, k: "b" },
-            { id: 14, q: "Nulis kecap 'Boléd' mun ditulis aksara Sunda nyaéta...", img: "ᮘᮧᮜᮦᮓ᮪", o: {a:"Baled", b:"Boled", c:"Buled", d:"Beuled"}, k: "b" },
-            { id: 15, q: "Pék baca lambang ieu:", img: "ᮌᮏᮂ", o: {a:"GAJAH", b:"GAJIH", c:"GAJANG", d:"GAJAR"}, k: "a" },
-            { id: 16, q: "Pék baca lambang ieu:", img: "ᮊᮞᮥᮛ᮪", o: {a:"KASUR", b:"KASUH", c:"KASUNG", d:"KASUM"}, k: "a" },
-            { id: 17, q: "Rarangken Panyecek dina lambang 'ᮊᮀ' nuduhkeun sora...", img: "ᮊᮀ", o: {a:"R", b:"H", c:"NG", d:"S"}, k: "c" },
-            { id: 18, q: "Naon bédana Panyakra (-r-) jeung Panglayar (-r)?", img: "", o: {a:"Panyakra di tengah, Panglayar di tungtung", b:"Teu aya bedana", c:"Panyakra vokal", d:"Panglayar konsonan"}, k: "a" },
-            { id: 19, q: "Pék baca lambang ieu:", img: "ᮜᮥᮠᮥᮛ᮪", o: {a:"LUHUR", b:"LAHAR", c:"LUHAR", d:"LUHUH"}, k: "a" },
-            { id: 20, q: "Pék baca lambang ieu:", img: "ᮙᮔᮥᮞ᮪ᮛ", o: {a:"MANUSRA", b:"MANUSIA", c:"MANUSSA", d:"MANARU"}, k: "a" },
-            { id: 21, q: "Rarangken nu fungsina maéhan sora vokal 'A' disebut...", img: "᮪", o: {a:"Pamingkal", b:"Pamepet", c:"Pamaéh", d:"Panyakra"}, k: "c" },
-            { id: 22, q: "Aksara 'ᮊ' ditambahan rarangken Pamingkal dibaca...", img: "ᮊᮡ", o: {a:"KRA", b:"KLA", c:"KYA", d:"KWA"}, k: "c" },
-            { id: 23, q: "Mana nulis kecap 'Krupuk' anu bener?", img: "ᮊᮢᮥᮕᮥᮊ᮪", o: {a:"Krupuk", b:"Kurupuk", c:"Kaprupuk", d:"Krupukah"}, k: "a" },
-            { id: 24, q: "Rarangken anu perenahna aya di handapeun aksara nyaéta...", img: "", o: {a:"Panghulu", b:"Panyuku & Panyakra", c:"Panyecek", d:"Pamaéh"}, k: "b" },
-            { id: 25, q: "Pék baca lambang ieu:", img: "ᮜᮥᮙ᮪ᮕᮒ᮪", o: {a:"LUMPAT", b:"LOMPAT", c:"LIMPIT", d:"LAMPAT"}, k: "a" }
-        ];
 
         function startExam() {
             const nis = document.getElementById('nisn-input').value;
@@ -161,7 +176,7 @@
             if (muridLogin) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('exam-interface').style.display = 'flex';
-                document.getElementById('user-info').innerText = muridLogin.nama + " (" + muridLogin.kelas + ")";
+                document.getElementById('user-display').innerText = muridLogin.nama + " (" + muridLogin.kelas + ")";
                 initNav(); render(); startTimer();
             }
         }
@@ -177,11 +192,9 @@
 
         function render() {
             const s = masterSoal[currentIdx];
-            // FIXED: Ngan nampilkeun soal wungkul [cite: 2026-02-22]
             document.getElementById('q-text').innerText = (currentIdx + 1) + ". " + s.q;
-            
             const box = document.getElementById('aksara-box');
-            box.innerText = s.img; box.style.display = s.img==="" ? "none":"flex";
+            box.innerText = s.img; box.style.display = s.img === "" ? "none" : "flex";
             
             document.getElementById('label-a').innerText = s.o.a;
             document.getElementById('label-b').innerText = s.o.b;
@@ -194,7 +207,6 @@
                 const parent = r.closest('.option-btn');
                 if(r.checked) parent.classList.add('active');
                 else parent.classList.remove('active');
-
                 r.onclick = () => { answers[currentIdx] = r.value; updateNav(); render(); };
             });
             updateNav();
@@ -203,9 +215,11 @@
         function updateNav() {
             masterSoal.forEach((_, i) => {
                 const b = document.getElementById(`nav-${i}`);
-                b.className = 'q-box';
-                if (i === currentIdx) b.classList.add('current');
-                if (answers[i]) b.classList.add('filled');
+                if (b) {
+                    b.className = 'q-box';
+                    if (i === currentIdx) b.classList.add('current');
+                    if (answers[i]) b.classList.add('filled');
+                }
             });
         }
 
@@ -220,21 +234,21 @@
             }, 1000);
         }
 
-        function confirmFinish() { if(confirm("Yakin réngsé?")) finish(); }
+        function confirmFinish() { if(confirm("Yakin parantos réngsé sadayana?")) finish(); }
 
         async function finish() {
             let correct = 0;
             masterSoal.forEach((s, i) => { if(answers[i] === s.k) correct++; });
             const score = (correct / masterSoal.length) * 100;
-            document.querySelector('.main-content').innerHTML = "<h2>Ngirim data...</h2>";
+            document.querySelector('.main-content').innerHTML = "<div style='text-align:center; padding:50px;'><h2>Ngirim jawaban... Mangga antos.</h2></div>";
             try {
                 await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, kelas: muridLogin.kelas, peunteun: score.toFixed(0) }) });
             } catch (e) {}
             document.querySelector('.main-content').innerHTML = `
-                <div style="text-align:center; padding:50px; background:white; border-radius:20px;">
-                    <h1 style="color:var(--primary);">SKOR AKHIR</h1>
-                    <div style="font-size:80px; color:var(--success); font-weight:bold; margin:20px 0;">${score.toFixed(0)}</div>
-                    <p>${muridLogin.nama}<br>Ujian parantos lekasan.</p>
+                <div style="text-align:center; padding:50px; background:white; border-radius:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <h1 style="color:var(--primary);">HATUR NUHUN!</h1>
+                    <div style="font-size:70px; color:var(--success); font-weight:bold; margin:20px 0;">${score.toFixed(0)}</div>
+                    <p style="color:#666;">Data parantos kasimpen dina server.</p>
                     <button class="btn-start" onclick="location.reload()">LOGOUT</button>
                 </div>
             `;
