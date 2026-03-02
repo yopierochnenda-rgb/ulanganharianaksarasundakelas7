@@ -2,66 +2,75 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBT Aksara Sunda - Rules Official</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CBT Rules Official - Mobile Ready</title>
     <style>
-        :root { --primary: #2c3e50; --success: #27ae60; --warning: #f39c12; --danger: #e74c3c; --bg: #f4f7f6; }
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: #333; }
-        #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #1e3c72, #2a5298); }
-        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; width: 380px; }
-        .login-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem; text-align: center; }
-        .btn-start { background: var(--success); color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        .btn-start:disabled { background: #ccc; cursor: not-allowed; }
+        :root { --primary: #2c3e50; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); overflow-x: hidden; -webkit-user-select: none; user-select: none; }
+
+        /* LOGIN SCREEN */
+        #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #1e3c72, #2a5298); padding: 20px; box-sizing: border-box; }
+        .login-card { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .login-card h2 { color: var(--primary); margin-top: 0; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; text-align: center; font-size: 16px; }
+        .btn-start { background: var(--success); color: white; border: none; padding: 15px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .btn-start:disabled { background: #ccc; }
+
+        /* INTERFACE UJIAN (RESPONSIVE) */
         #exam-interface { display: none; flex-direction: column; height: 100vh; }
-        header { background: white; padding: 15px 30px; border-bottom: 2px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
-        .main-content { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; }
-        .sidebar { width: 260px; background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; }
-        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; margin: 15px 0; }
-        .q-box { border: 1px solid #ccc; padding: 10px 0; text-align: center; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
+        header { background: white; padding: 10px 15px; border-bottom: 2px solid #ddd; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; position: sticky; top: 0; z-index: 1000; }
+        
+        .main-content { display: flex; flex-direction: column; flex: 1; overflow-y: auto; padding: 10px; gap: 10px; padding-bottom: 80px; }
+        
+        .sidebar { order: 2; background: white; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .grid-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .q-box { border: 1px solid #ccc; padding: 10px 0; text-align: center; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .q-box.active { border: 2px solid var(--primary); background: #eef2f7; }
         .q-box.answered { background: var(--success); color: white; border-color: var(--success); }
-        .question-card { flex: 1; background: white; border: 1px solid #ddd; border-radius: 8px; display: flex; flex-direction: column; }
-        .q-body { padding: 40px; flex: 1; overflow-y: auto; }
-        .aksara-display { font-size: 5rem; text-align: center; margin: 20px 0; color: var(--primary); min-height: 120px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 10px; border: 1px dashed #ccc; }
-        .options-container { display: flex; flex-direction: column; gap: 12px; }
-        .option-btn { border: 1px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; }
-        .option-btn input { margin-right: 15px; transform: scale(1.3); }
-        .q-footer { padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; background: #fafafa; }
-        .btn { padding: 12px 25px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; }
+
+        .question-card { order: 1; background: white; border: 1px solid #ddd; border-radius: 8px; display: flex; flex-direction: column; min-height: 350px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .q-body { padding: 20px; flex: 1; }
+        .aksara-display { font-size: 4.5rem; text-align: center; margin: 15px 0; color: var(--primary); background: #f9f9f9; border-radius: 10px; border: 1px dashed #ccc; min-height: 120px; display: flex; align-items: center; justify-content: center; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { border: 1px solid #ddd; padding: 14px; border-radius: 8px; display: flex; align-items: center; font-size: 16px; transition: 0.2s; }
+        .option-btn:active { background: #f0f0f0; }
+        .option-btn input { width: auto; margin-right: 12px; transform: scale(1.3); }
+
+        /* FOOTER NAVIGASI (FIXED DI HANDAP HP) */
+        .q-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1001; }
+        .btn-nav { padding: 12px 25px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 14px; color: white; min-width: 100px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false">
 
     <div id="login-screen">
         <div class="login-card">
-            <h2 style="margin:0; color: var(--primary);">PTS BASA SUNDA</h2>
-            <p style="font-size: 0.8rem; margin-bottom: 20px;">Pilih Nami kanggo munculkeun NIS</p>
+            <h2>RULES CBT</h2>
+            <p style="font-size: 0.8rem; color: #666;">Database: <b>DataSiswa</b></p>
             
-            <input type="text" id="nami-input" list="daftar-nami" placeholder="Tulis Nami Anjeun..." autocomplete="off">
+            <input type="text" id="nami-input" list="daftar-nami" placeholder="Ketik Nami Anjeun..." autocomplete="off">
             <datalist id="daftar-nami"></datalist>
 
             <input type="number" id="nisn-input" placeholder="NIS Otomatis" readonly style="background: #eee; cursor: not-allowed;">
             
             <button id="btn-login" class="btn-start" onclick="startExam()" disabled>NGADAGOAN DATA...</button>
-            <p id="status-db" style="font-size: 0.75rem; color: #666; margin-top: 15px;">Ngahubungkeun ka Database...</p>
+            <p id="status-db" style="font-size: 0.7rem; color: #888; margin-top: 10px;">Ngahubungkeun ka Google Sheets...</p>
         </div>
     </div>
 
     <div id="exam-interface">
         <header>
-            <div><h3 style="margin:0">CBT Aksara Sunda</h3><small id="user-info"></small></div>
-            <div id="timer" style="font-weight: bold; color: var(--danger); font-size: 1.2rem;">Sisa Waktu: 30:00</div>
+            <div id="user-info" style="font-weight: bold; color: var(--primary);"></div>
+            <div id="timer" style="color: var(--danger); font-weight: bold; font-size: 1.1rem;">30:00</div>
         </header>
+
         <div class="main-content">
-            <aside class="sidebar">
-                <div style="font-weight:bold; border-bottom:1px solid #eee; padding-bottom:5px;">Navigasi Soal</div>
-                <div class="grid-nav" id="nav-grid"></div>
-                <button class="btn" style="background: var(--success); color: white; margin-top: auto; padding: 15px;" onclick="confirmFinish()">Selesai Ujian</button>
-            </aside>
             <main class="question-card">
                 <div class="q-body">
-                    <div id="q-text" style="font-size: 1.3rem; margin-bottom: 20px;"></div>
+                    <div id="q-text" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;"></div>
                     <div id="aksara-box" class="aksara-display"></div>
+                    
                     <div class="options-container">
                         <label class="option-btn"><input type="radio" name="opt" value="a"> <span id="label-a"></span></label>
                         <label class="option-btn"><input type="radio" name="opt" value="b"> <span id="label-b"></span></label>
@@ -69,30 +78,31 @@
                         <label class="option-btn"><input type="radio" name="opt" value="d"> <span id="label-d"></span></label>
                     </div>
                 </div>
-                <div class="q-footer">
-                    <button class="btn" style="background:#95a5a6; color:white" onclick="move(-1)">Sateuacanna</button>
-                    <button class="btn" style="background:#3498db; color:white" onclick="move(1)">Salajengna</button>
-                </div>
             </main>
+
+            <aside class="sidebar">
+                <div style="font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;">NAVIGASI SOAL:</div>
+                <div class="grid-nav" id="nav-grid"></div>
+                <button class="btn-nav" style="background: var(--success); width: 100%; margin-top: 20px; padding: 15px;" onclick="confirmFinish()">RENGSE UJIAN</button>
+            </aside>
+        </div>
+
+        <div class="q-footer">
+            <button class="btn-nav" style="background:#95a5a6;" onclick="move(-1)">Sateuacanna</button>
+            <button class="btn-nav" style="background:#3498db;" onclick="move(1)">Salajengna</button>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHQzo0mQrzM6q8uX2qzi55ASmyWs7s-1cOjRj-EDTnm9UJSO6Pc2CWNRjZ0wLycbD_/exec";
-        let dbSiswa = [];
-        let currentIdx = 0;
-        let answers = {};
-        let timeRemaining = 30 * 60;
-        let muridLogin = null;
+        let dbSiswa = [], currentIdx = 0, answers = {}, timeRemaining = 30 * 60, muridLogin = null;
 
+        // 1. AMBIL DATA & SETUP AUTO-FILL
         window.onload = async () => {
-            const statusLabel = document.getElementById('status-db');
-            const loginBtn = document.getElementById('btn-login');
             try {
                 const response = await fetch(SCRIPT_URL);
                 dbSiswa = await response.json();
                 
-                // SETUP AUTO-FILL DISIEU
                 const listNami = document.getElementById('daftar-nami');
                 dbSiswa.forEach(m => {
                     let opt = document.createElement('option');
@@ -105,24 +115,29 @@
                     document.getElementById('nisn-input').value = found ? found.nis : "";
                 });
 
-                statusLabel.innerText = "Database Online Siap!";
-                statusLabel.style.color = "green";
-                loginBtn.disabled = false;
-                loginBtn.innerText = "LOGIN & MULAI";
+                document.getElementById('status-db').innerText = "Database Online!";
+                document.getElementById('btn-login').disabled = false;
+                document.getElementById('btn-login').innerText = "MULAI UJIAN";
             } catch (e) {
-                statusLabel.innerText = "Gagal nyambung ka Database!";
-                statusLabel.style.color = "red";
+                document.getElementById('status-db').innerText = "Gagal koneksi!";
             }
         };
 
+        // 2. FITUR ANTI-CONTEK (PÉLING)
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden && muridLogin) {
+                alert("⚠️ PERINGATAN! \nUlah kaluar ti layar ujian! \nSadaya aktivitas anjeun kacatet ku sistem.");
+            }
+        });
+
         const masterSoal = [
-            { id: 1, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'KA'?", img: "", o: {a:"ᮊ", b:"ᮌ", c:"ᮍ", d:"ᮠ"}, k: "a" },
-            { id: 2, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'LA'?", img: "", o: {a:"ᮛ", b:"ᮜ", c:"ᮝ", d:"ᮯ"}, k: "b" },
-            { id: 3, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'SA'?", img: "", o: {a:"ᮕ", b:"ᮘ", c:"ᮞ", d:"ᮊ"}, k: "c" },
-            { id: 4, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'MA'?", img: "", o: {a:"ᮙ", b:"ᮔ", c:"ᮚ", d:"ᮜ"}, k: "a" },
-            { id: 5, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'E' (lele)?", img: "", o: {a:"ᮃ", b:"ᮈ", c:"ᮇ", d:"ᮅ"}, k: "b" },
-            { id: 6, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'O'?", img: "", o: {a:"ᮄ", b:"ᮉ", c:"ᮇ", d:"ᮈ"}, k: "c" },
-            { id: 7, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'EU'?", img: "", o: {a:"ᮈ", b:"ᮇ", c:"ᮃ", d:"ᮉ"}, k: "d" },
+            { id: 1, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'KA'?", img: "ᮊ", o: {a:"KA", b:"GA", c:"NGA", d:"HA"}, k: "a" },
+            { id: 2, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'LA'?", img: "ᮜ", o: {a:"RA", b:"LA", c:"WA", d:"YA"}, k: "b" },
+            { id: 3, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'SA'?", img: "ᮞ", o: {a:"PA", b:"BA", c:"SA", d:"KA"}, k: "c" },
+            { id: 4, cat: "Ngalagena", q: "Manakah lambang aksara Sunda pikeun sora 'MA'?", img: "ᮙ", o: {a:"MA", b:"NA", c:"YA", d:"LA"}, k: "a" },
+            { id: 5, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'E' (lele)?", img: "ᮈ", o: {a:"A", b:"E", c:"O", d:"I"}, k: "b" },
+            { id: 6, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'O'?", img: "ᮇ", o: {a:"I", b:"EU", c:"O", d:"E"}, k: "c" },
+            { id: 7, cat: "Swara", q: "Manakah aksara Swara pikeun sora 'EU'?", img: "ᮉ", o: {a:"E", b:"O", c:"A", d:"EU"}, k: "d" },
             { id: 8, cat: "Nulis", q: "Mana nu bener nuliskeun kecap 'Sasmita'?", img: "", o: {a:"ᮞᮞ᮪ᮙᮤᮒ", b:"ᮞᮞ᮪ᮙᮒᮤ", c:"ᮞᮞ᮪ᮙᮦᮒ", d:"ᮞᮞᮙ᮪ᮒ"}, k: "a" },
             { id: 9, cat: "Rarangken", q: "Aksara 'ᮙ' (MA) dibéré rarangken Panyakra jeung Panghulu dibaca...", img: "", o: {a:"MRAI", b:"MRU", c:"MRI", d:"MRA"}, k: "c" },
             { id: 10, cat: "Nulis", q: "Nulis kecap 'Pramuka' nu bener nyaéta...", img: "", o: {a:"ᮕᮡᮙᮥᮊ", b:"ᮕᮢᮙᮥᮊ", c:"ᮕᮢᮙᮥᮊ᮪", d:"ᮕᮙᮢᮥᮊ"}, k: "b" },
@@ -144,18 +159,25 @@
         ];
 
         function startExam() {
-            const nisVal = document.getElementById('nisn-input').value;
-            muridLogin = dbSiswa.find(s => s.nis === nisVal);
+            const nis = document.getElementById('nisn-input').value;
+            muridLogin = dbSiswa.find(s => s.nis === nis);
             if (muridLogin) {
+                // Request Fullscreen
+                let de = document.documentElement;
+                if(de.requestFullscreen) de.requestFullscreen();
+                
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('exam-interface').style.display = 'flex';
-                document.getElementById('user-info').innerText = `${muridLogin.nama} (${muridLogin.nis})`;
+                document.getElementById('user-info').innerText = muridLogin.nama;
+                
+                // Acak Soal
                 for(let i=masterSoal.length-1; i>0; i--){
                     const j = Math.floor(Math.random()*(i+1));
                     [masterSoal[i], masterSoal[j]] = [masterSoal[j], masterSoal[i]];
                 }
+                
                 initNav(); render(); startTimer();
-            } else { alert("Mangga pilih nami anu leres!"); }
+            } else { alert("Mangga pilih nami!"); }
         }
 
         function initNav() {
@@ -171,11 +193,13 @@
             const s = masterSoal[currentIdx];
             document.getElementById('q-text').innerText = s.q;
             const box = document.getElementById('aksara-box');
-            box.innerText = s.img; box.style.display = s.img === "" ? "none" : "flex";
+            box.innerText = s.img; box.style.display = s.img==="" ? "none":"flex";
+            
             document.getElementById('label-a').innerText = s.o.a;
             document.getElementById('label-b').innerText = s.o.b;
             document.getElementById('label-c').innerText = s.o.c;
             document.getElementById('label-d').innerText = s.o.d;
+            
             const rads = document.getElementsByName('opt');
             rads.forEach(r => {
                 r.checked = (answers[currentIdx] === r.value);
@@ -192,40 +216,44 @@
             });
         }
 
-        function move(d) { currentIdx += d; if (currentIdx < 0) currentIdx = 0; if (currentIdx >= 25) currentIdx = 24; render(); }
+        function move(d) { currentIdx += d; if(currentIdx < 0) currentIdx=0; if(currentIdx >= 25) currentIdx=24; render(); }
 
         function startTimer() {
-            const tDiv = document.getElementById('timer');
             const interval = setInterval(() => {
-                let m = Math.floor(timeRemaining / 60); let s = timeRemaining % 60;
-                tDiv.innerText = `Sisa Waktu: ${m}:${s < 10 ? '0'+s : s}`;
+                let m = Math.floor(timeRemaining / 60), s = timeRemaining % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
                 if (timeRemaining <= 0) { clearInterval(interval); finish(); }
                 timeRemaining--;
             }, 1000);
         }
 
-        function confirmFinish() { if (confirm("Rengse Ujian?")) finish(); }
+        function confirmFinish() { if(confirm("Yakin parantos réngsé?")) finish(); }
 
         async function finish() {
             let correct = 0;
-            masterSoal.forEach((s, i) => { if (answers[i] === s.k) correct++; });
-            const finalScore = (correct * 4);
-            document.querySelector('.main-content').innerHTML = `<h2>Nuju nyimpen hasil...</h2>`;
+            masterSoal.forEach((s, i) => { if(answers[i] === s.k) correct++; });
+            const finalScore = correct * 4;
+            
+            document.querySelector('.main-content').innerHTML = "<div style='text-align:center; padding:50px;'><h2>Nuju ngirim hasil...</h2></div>";
+            
             try {
-                await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, nilai: finalScore })
+                await fetch(SCRIPT_URL, { 
+                    method: "POST", 
+                    mode: "no-cors", 
+                    body: JSON.stringify({ nama: muridLogin.nama, nis: muridLogin.nis, nilai: finalScore }) 
                 });
-            } catch (e) { console.error(e); }
+            } catch (e) {}
+
             document.querySelector('.main-content').innerHTML = `
-                <div style="width:100%; text-align:center; padding:50px;">
-                    <h1>HASIL UJIAN</h1>
+                <div style="text-align:center; padding:50px; background:white; border-radius:10px;">
+                    <h1 style="color:var(--primary);">HASIL UJIAN</h1>
                     <p>${muridLogin.nama}</p>
-                    <div style="font-size:100px; color:var(--success); font-weight:bold;">${finalScore}</div>
-                    <button class="btn" style="background:var(--primary); color:white" onclick="location.reload()">LOGOUT</button>
+                    <div style="font-size:80px; color:var(--success); font-weight:bold;">${finalScore}</div>
+                    <p>Hatur nuhun parantos ngerjakeun.</p>
+                    <button class="btn-start" style="background:var(--primary); margin-top:20px;" onclick="location.reload()">LOGOUT</button>
                 </div>
             `;
+            document.querySelector('.q-footer').style.display = 'none';
         }
     </script>
 </body>
